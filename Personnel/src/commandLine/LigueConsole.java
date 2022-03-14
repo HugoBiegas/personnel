@@ -15,6 +15,7 @@ public class LigueConsole
 	private GestionPersonnel gestionPersonnel;
 	private EmployeConsole employeConsole;
 
+
 	public LigueConsole(GestionPersonnel gestionPersonnel, EmployeConsole employeConsole)
 	{
 		this.gestionPersonnel = gestionPersonnel;
@@ -140,5 +141,6 @@ public class LigueConsole
 	{
 		return new Option("Supprimer", "d", () -> {ligue.remove();});
 	}
+
 	
 }
