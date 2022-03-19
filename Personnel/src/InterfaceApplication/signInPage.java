@@ -71,32 +71,12 @@ public class signInPage{
          frame.setLayout(new GridBagLayout());
          //permet de fermet proprement les Jframe
          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         //mise en place de la nave bare
-         frame.setJMenuBar(menuBar());
          //ajouter le contenu
          frame.add(container());
          //permet de faire que la personne ne peux pas modifier la taille de la fenettre
          frame.setResizable(false);
     	 return frame;
     }
-    
-    private JMenuBar menuBar()
-	 {
-		 JMenuBar menubar = new JMenuBar();
-		 //dimention du menut en haut
-		 menubar.setPreferredSize(new Dimension(50,50));
-		 //couleur du menu
-		 menubar.setBackground(Color.decode("#9f9f9f"));
-		 //créations du bonton connexion
-		 JMenu menu = new JMenu("Connexion");
-		 //style du texte
-		 menu.setFont(new Font("Serif", Font.BOLD, 20));
-		 //couleur de font 
-		 menu.setForeground(Color.decode("#fafafa"));
-		 //rajouter a la nave bar
-		 menubar.add(menu);
-		return menubar;
-	 } 
     
     private JPanel container()
     {
