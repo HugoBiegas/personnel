@@ -46,6 +46,7 @@ public class listEmployes {
 	private  Ligue ligue;
 	private  HomePage homePage;
 	private Employe connectedEmploye;
+	private JFrame employes = new JFrame();
 	
 	 public listEmployes(GestionPersonnel gestionPersonnel, Ligue ligue, Employe connectedEmploye) {
 		    this.gestionPersonnel = gestionPersonnel;
@@ -60,7 +61,6 @@ public class listEmployes {
 
 	public JFrame frame()
 	{
-		JFrame employes = new JFrame();
 		employes.getContentPane().setBackground(Color.decode("#cbc0d3"));
 		employes.setSize(700,700);
 		employes.setLocationRelativeTo(null);
@@ -115,7 +115,7 @@ public class listEmployes {
 	
 	private JLabel notEmployesFunded()
 	{
-		JLabel label = new JLabel("Il y a aucun employé dans cette ligue");
+		JLabel label = new JLabel("Il y a aucun employï¿½ dans cette ligue");
 		label.setFont(new Font("Serif", Font.BOLD, 22));
 		label.setForeground(Color.decode("#cbc0d3"));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -143,7 +143,7 @@ public class listEmployes {
 	
 	 private JMenuItem menuItem()
 	 {
-		 JMenuItem itemMenu = new JMenuItem("Gérer mon compte");
+		 JMenuItem itemMenu = new JMenuItem("Gï¿½rer mon compte");
 		 itemMenu.setFont(new Font("Serif", Font.PLAIN, 20));
 		 itemMenu.setBackground(Color.decode("#540b0e"));
 		 itemMenu.setForeground(Color.decode("#fafafa"));
@@ -196,7 +196,7 @@ public class listEmployes {
 	private JLabel titleLigue()
 	{
 		JLabel title = new JLabel();
-		title.setText(ligue.getNom() + " administrée par  " + ligue.getAdministrateur().getNom());
+		title.setText(ligue.getNom() + " administrÃ©e par  " + ligue.getAdministrateur().getNom());
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("Serif", Font.BOLD, 27));
 		title.setForeground(Color.decode("#540b0e"));
@@ -272,7 +272,7 @@ public class listEmployes {
 				} catch (SauvegardeImpossible e1) {
 					e1.printStackTrace();
 				}
-				JOptionPane.showMessageDialog(null, "la ligue a été supprimée", "supprimer la ligue", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "la ligue a ï¿½tï¿½ supprimï¿½e", "supprimer la ligue", JOptionPane.INFORMATION_MESSAGE);
 				HomePage pageLigues = new HomePage(gestionPersonnel, connectedEmploye);
 				frame().setVisible(false);
 				frame().dispose();
@@ -303,7 +303,7 @@ public class listEmployes {
 	
 	private JButton addEmploye()
 	{
-		JButton addEmploye = new JButton("Ajouter un employé");
+		JButton addEmploye = new JButton("Ajouter un employÃ©");
 		if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye)) {
 			addEmploye.setEnabled(false);
 	 }

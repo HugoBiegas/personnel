@@ -210,9 +210,19 @@ public class HomePage {
 		 listLigues.setFont(new Font("Serif", Font.BOLD, 22));
 		 //permet de prendre la model
 		 listLigues.setModel(listLigue);
+		 //si il est root il vois tout les ligues
+		 //sinon il vois que les ligues que le root lui as mis
+		 if(connectedEmploye.equals(gestionPersonnel.getRoot())) {
 		 for (Ligue ligue : choix) {
 			   listLigue.addElement(ligue);
-			}
+			}			 
+		 }else {
+			 for (Ligue ligue : choix) {
+				 if(ligue.getNom().equals(connectedEmploye.getLigue().getNom()))
+					 listLigue.addElement(ligue);
+				} 
+		 }
+
 		 listLigues.addListSelectionListener(ItemAction());
 		 //permet de prendre la model
 		 listLigues.setModel(listLigue);
