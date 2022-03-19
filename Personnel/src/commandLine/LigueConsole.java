@@ -39,12 +39,15 @@ public class LigueConsole
 
 	private Option afficherLigues()
 	{
+		//on mais le titre, shortcut et l'actions appret le shortcut
 		return new Option("Afficher les ligues", "l", () -> {System.out.println(gestionPersonnel.getLigues());});
 	}
 
 	
 	private Option afficher(final Ligue ligue)
 	{
+		//on mais le titre, shortcut et l'actions appret le shortcut
+
 		return new Option("Afficher la ligue", "l", 
 				() -> 
 				{
@@ -56,6 +59,8 @@ public class LigueConsole
 	
 	private Option afficherEmployes(final Ligue ligue)
 	{
+		//on mais le titre, shortcut et l'actions appret le shortcut
+
 		return new Option("Afficher les employes", "l", () -> {
 			
 			for (Employe employes: ligue.getEmployes())
@@ -71,6 +76,8 @@ public class LigueConsole
 	
 	private Option ajouterLigue()
 	{
+		//on mais le titre, shortcut et l'actions appret le shortcut
+
 		return new Option("Ajouter une ligue", "a", () -> 
 		{
 			try
@@ -100,6 +107,8 @@ public class LigueConsole
 	
 	private Option changerNom(final Ligue ligue)
 	{
+		//on mais le titre, shortcut et l'actions appret le shortcut
+
 		return new Option("Renommer", "r", 
 				() -> {ligue.setNom(getString("Nouveau nom : "));
 				System.out.println("La ligue a bien été renommée par" + ligue.getNom());

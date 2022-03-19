@@ -18,7 +18,8 @@ public class EmployeConsole
 	
 	private Option afficher(final Employe employe)
 	{
-		return new Option("Afficher l'employé", "l", () -> {System.out.println(employe);});
+		//on mais le titre, shortcut et l'actions appret le shortcut
+		return new Option("Afficher l'employé", "afficher", () -> {System.out.println(employe);});
 	}
 
 	ListOption<Employe> editerEmploye()
@@ -29,7 +30,7 @@ public class EmployeConsole
 	
 	Option editerEmploye(Employe employe)
 	{
-			Menu menu = new Menu("Gérer le compte " + employe.getNom(), "c");
+			Menu menu = new Menu("Gérer le compte " + employe.getNom(), "gc");
 			menu.add(afficher(employe));
 			menu.add(changerNom(employe));
 			menu.add(changerPrenom(employe));
@@ -44,23 +45,23 @@ public class EmployeConsole
 	
 	private Option changerNom(final Employe employe)
 	{
-		return new Option("Changer le nom", "n", 
-				() -> {employe.setNom(getString("Nouveau nom : "));
-				}
-			);
+		//on mais le titre, shortcut et l'actions appret le shortcut
+		return new Option("Changer le nom", "cn", () -> {employe.setNom(getString("Nouveau nom : "));});
 	}
 	
 	
 	private Option changerPrenom(final Employe employe)
 	{
-		return new Option("Changer le prénom", "p", () -> {employe.setPrenom(getString("Nouveau prénom : "));
+		//on mais le titre, shortcut et l'actions appret le shortcut
+		return new Option("Changer le prénom", "cp", () -> {employe.setPrenom(getString("Nouveau prénom : "));
 		});
 	}
 	
 	
 	private Option changerMail(final Employe employe)
 	{
-		return new Option("Changer le mail", "e", () -> {employe.setMail(getString("Nouveau mail : "));
+		//on mais le titre, shortcut et l'actions appret le shortcut
+		return new Option("Changer le mail", "cmail", () -> {employe.setMail(getString("Nouveau mail : "));
 		});
 	}
 	
@@ -68,32 +69,33 @@ public class EmployeConsole
 	
 	private Option changerPassword(final Employe employe)
 	{
-		return new Option("Changer le password", "x", () -> {employe.setPassword(getString("Nouveau password : "));
+		//on mais le titre, shortcut et l'actions appret le shortcut
+		return new Option("Changer le password", "cmdp", () -> {employe.setPassword(getString("Nouveau password : "));
 		});
 	}
 	
 	
 	
 	private Option changeDateArrivee(final Employe employe, LocalDate dateArrivee) {
-		
-		return new Option("Changer la date d'arriv�e", "d", ()->
+		//on mais le titre, shortcut et l'actions appret le shortcut
+		return new Option("Changer la date d'arrivée", "cda", ()->
 		{
 			try {
-			    System.out.println("Date d'arriv�e");
-				employe.setDateArrivee(LocalDate.parse(getString("Date d'arriv�e (YYYY-MM-DD) : ")));
+			    System.out.println("Date d'arrivée");
+				employe.setDateArrivee(LocalDate.parse(getString("Date d'arriv�e (YYYY-MM-DD) : ")));
 				
 		    } 
 			catch (commandLine.DateInvalideException e) {
-				System.out.println("Date d'arriv�e incorrecte. ");
+				System.out.println("Date d'arrivée incorrecte. ");
 		}});
 	}
 	
 	
 	private Option changeDateDepart(final Employe employe, LocalDate dateDepart) {
-		return new Option("Changer la date de d�part", "b", ()->
+		return new Option("Changer la date de départ", "cdd", ()->
 		{
 			try {
-			  employe.setDateDepart(LocalDate.parse(getString("Date d'arriv�e (YYYY-MM-DD) : ")));
+			  employe.setDateDepart(LocalDate.parse(getString("Date d'arrivée (YYYY-MM-DD) : ")));
 		 } 
 			catch (DateInvalideException e) {
 			e.printStackTrace();

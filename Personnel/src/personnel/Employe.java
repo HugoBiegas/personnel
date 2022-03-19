@@ -151,7 +151,7 @@ public class Employe implements Serializable, Comparable<Employe>
 
 	
 	/**
-	 * Retourne la date d'arrivée de l'employe;
+	 * Retourne la date d'arrivï¿½e de l'employe;
 	 * */
 	
 	public LocalDate getDateArrivee()
@@ -161,7 +161,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	
 	
 	/**
-	 * Change la date d'arrivée de l'employe
+	 * Change la date d'arrivï¿½e de l'employe
 	 * */
 	public void setDateArrivee(LocalDate dateArrivee) throws DateInvalideException 
 	{
@@ -174,7 +174,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	}
 	
 	/**
-	 * Retourne la date de départ de l'employe
+	 * Retourne la date de dï¿½part de l'employe
 	 * */
 	
 	public LocalDate getDateDepart()
@@ -183,7 +183,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	}
 	
 	/**
-	 * Change la date de départ de l'employe
+	 * Change la date de dï¿½part de l'employe
 	 * */
 	
 	public void setDateDepart(LocalDate dateDepart) throws DateInvalideException 
@@ -277,20 +277,6 @@ public class Employe implements Serializable, Comparable<Employe>
 		return res;
 	}
 	
-	
-	//@Override
-	//public String toString()
-//	{
-	//	String res = nom + " " + prenom + " " + mail + " " + dateArrivee + " " + dateDepart + " (";
-		//if (estRoot())
-			//res += "super-utilisateur";
-	//	else
-	//		res += ligue.toString();
-	//	return res + ")";
-//	}
-	
-	
-
 	public int getId() {
 		return id;
 	}

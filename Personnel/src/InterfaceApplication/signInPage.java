@@ -7,7 +7,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.TextField;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -36,9 +38,11 @@ public class signInPage{
     Ligue ligue;
     Employe employe;
     private JTextField passwordTxt;
-    private TextField login;
+    private JTextField login;
+    private JFrame frame = new JFrame();
     Employe connectedEmploye;
     private JLabel passIncorrect;
+    
     public signInPage(GestionPersonnel gestionPersonnel)
 	{
 		this.gestionPersonnel = gestionPersonnel;
@@ -52,59 +56,100 @@ public class signInPage{
     
     private JFrame frame()
     {
-    	JFrame frame = new JFrame();
-    	 frame.getContentPane().setBackground(Color.decode("#cbc0d3"));
-    	 frame.setTitle("Sign In !");
-    	 frame.setSize(700,700);
+    	//backgrawd couleur
+    	 frame.getContentPane().setBackground(Color.decode("#0080ff"));
+    	 //titre
+    	 frame.setTitle("Personnel");
+    	 //taille
+    	 frame.setSize(600,600);
+    	 //center la fenettre
     	 frame.setLocationRelativeTo(null);
+    	 //icon en haut a gauche
+    	 Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");  
+    	 frame.setIconImage(icon); 
+    	 //mise en place d'une grille complexe de ligne et colone
          frame.setLayout(new GridBagLayout());
+         //permet de fermet proprement les Jframe
          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         //mise en place de la nave bare
          frame.setJMenuBar(menuBar());
+         //ajouter le contenu
          frame.add(container());
-    	return frame;
+         //permet de faire que la personne ne peux pas modifier la taille de la fenettre
+         frame.setResizable(false);
+    	 return frame;
     }
+    
+    private JMenuBar menuBar()
+	 {
+		 JMenuBar menubar = new JMenuBar();
+		 //dimention du menut en haut
+		 menubar.setPreferredSize(new Dimension(50,50));
+		 //couleur du menu
+		 menubar.setBackground(Color.decode("#9f9f9f"));
+		 //créations du bonton connexion
+		 JMenu menu = new JMenu("Connexion");
+		 //style du texte
+		 menu.setFont(new Font("Serif", Font.BOLD, 20));
+		 //couleur de font 
+		 menu.setForeground(Color.decode("#fafafa"));
+		 //rajouter a la nave bar
+		 menubar.add(menu);
+		return menubar;
+	 } 
     
     private JPanel container()
     {
     	JPanel panel = new JPanel();
-    	panel.setPreferredSize(new Dimension(450,300));
-    	panel.setBackground(Color.decode("#feeafa"));
-    	//panel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#540b0e")));
-    	panel.setBorder(BorderFactory.createLineBorder(Color.decode("#540b0e"), 1));
+    	//dimentions de la fenettre
+    	panel.setPreferredSize(new Dimension(400,400));
+    	//couleur de fon
+    	panel.setBackground(Color.decode("#9f9f9f"));
+    	//faire les bordure avec couleur rouge épéseur 1
+    	panel.setBorder(BorderFactory.createLineBorder(Color.decode("#9f9f9f"), 1));
+    	//ajouer du login passaword
         panel.add(loginPasswordInput());
         return panel;
     }
-    
     private JPanel  loginPasswordInput()
     {
     	JPanel panel = new JPanel();
-    	panel.setBackground(Color.decode("#feeafa"));
-    	GridLayout layout = new GridLayout(0,2);
-    	layout.setVgap(40);
-    	layout.setHgap(10);
-        panel.setLayout(layout);
-        panel.add(login());
-        panel.add(loginInput());
-        panel.add(password());
-        panel.add(passInput());
-        panel.add(btnConnexion());
+    	//couleur de font
+    	panel.setBackground(Color.decode("#9f9f9f"));
+    	//créations d'une grille pour superposer les élément 
+    	//0 ces pour vertical 2 horrizontal
+    	//https://docs.oracle.com/javase/7/docs/api/java/awt/GridLayout.html
+    	GridLayout layout = new GridLayout(0,1);
+    	//espace vertical de la grille
+    	layout.setVgap(5);
+    	//message si connections fail
         panel.add(passwordFailed());
+    	//ajoute dans le panel
+        panel.setLayout(layout);
+        //ajoue du texte email
+        panel.add(email());
+        //endroit ou mettre l'email
+        panel.add(loginInput());
+        //ajoue du texte pasword
+        panel.add(password());
+        //endroi ou rentrer le mdp
+        panel.add(passInput());
+        //ajoue du bouton de connection
+        panel.add(btnConnexion());
         return panel;
     }
     
-    private JLabel login()
+    private JLabel email()
     {
-    	JLabel loginL = new JLabel("Login : ");
+    	JLabel loginL = new JLabel("email : ");
         loginL.setFont(new Font("Serif", Font.BOLD, 25));
         loginL.setForeground(Color.decode("#540b0e"));
         return loginL;
     }
     
-    private TextField loginInput()
+    private JTextField loginInput()
     {
-    	login = new TextField();
-        login.setPreferredSize(new Dimension(150,40));
-        
+    	login = new JTextField();
         return login;
     }
     
@@ -121,84 +166,70 @@ public class signInPage{
     	passwordTxt = new JTextField();
         return passwordTxt;
     }
-    
-    private  JButton btnConnexion()
-    {
-    	 JButton btnconnexion = new JButton("Connexion");
-         btnconnexion.setPreferredSize(new Dimension(200,50));
-         btnconnexion.setBackground(Color.decode("#540b0e"));
-         btnconnexion.setForeground(Color.decode("#fafafa"));
-         btnconnexion.setFont(new Font("Serif", Font.PLAIN, 20));
-         btnconnexion.addActionListener(new ActionListener()
-         {
-
-    		/**
-    		 *
-    		 */
-    		@Override
-    		public void actionPerformed(ActionEvent arg0) {
-    			
-    			if(passwordTxt.getText().equals(gestionPersonnel.getRoot().getPassword())){
-    				connectedEmploye = gestionPersonnel.getRoot();
-    				   HomePage home = new HomePage(gestionPersonnel, connectedEmploye);
-    				   home.frame().setVisible(true);
-    				   home.getEmploye(gestionPersonnel.getRoot());
-    			}
-    			else {
-    				for(Ligue ligue : gestionPersonnel.getLigues()) {
-       		    	 for(Employe employe : ligue.getEmployes()) {
-       		    	    if(passwordTxt.getText().equals(employe.getPassword()) && login.getText().equals(employe.getMail())) { 
-       		    			connectedEmploye = employe;
-       		    			HomePage home = new HomePage(gestionPersonnel, connectedEmploye);
-       		    			home.getEmploye(connectedEmploye);
-         				    home.frame().setVisible(true);
-       		    		 }else if(!passwordTxt.getText().equals(employe.getPassword()) || !login.getText().equals(employe.getMail())) {
-       		    			passIncorrect.setText("Login ou mot de passe incorrect!");
-       		    		 }
-       		    	 }
-       		     }
-    			}
-    		}
-         });
-         
-         return btnconnexion;
-    }
-    
-    
     private JLabel passwordFailed() 
     {
     	passIncorrect = new JLabel();
     	return passIncorrect;
     }
-       
-    private JMenuBar menuBar()
-	 {
-		 JMenuBar menubar = new JMenuBar();
-		 menubar.setPreferredSize(new Dimension(50,50));
-		 menubar.setBackground(Color.decode("#540b0e"));
-		 JMenu menu = new JMenu("Connexion");
-		 menu.setAlignmentX(SwingConstants.WEST);
-		 menu.setFont(new Font("Serif", Font.BOLD, 20));
-		 menu.setForeground(Color.decode("#fafafa"));
-		 menu.setSize(80,80);
-		 menubar.add(menu);
-		return menubar;
-	 }
     
-    public void HomePage() {
-    	 JFrame homePage = new JFrame();
-    	 homePage.setVisible(true);
-		 homePage.setTitle("Home page");
-		 homePage.getContentPane().setLayout(new FlowLayout());
-		 homePage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		 homePage.pack();
+    private  JButton btnConnexion()
+    {
+    	 JButton btnconnexion = new JButton("Connexion");
+    	 //Dimension btn, couleur, actions ...
+         btnconnexion.setPreferredSize(new Dimension(200,50));
+         btnconnexion.setBackground(Color.decode("#540b0e"));
+         btnconnexion.setForeground(Color.decode("#fafafa"));
+         btnconnexion.setFont(new Font("Serif", Font.PLAIN, 20));
+         btnconnexion.addActionListener(btnAction());
+         
+         return btnconnexion;
     }
+    private ActionListener btnAction() {
+    	return new ActionListener()
+        {
+   		@Override
+   		public void actionPerformed(ActionEvent arg0) {
+   			int cpt=0;
+   			//teste le champs password et mail de root
+   			if(passwordTxt.getText().equals(gestionPersonnel.getRoot().getPassword()) && login.getText().equals(gestionPersonnel.getRoot().getMail())){
+	    	    	//envoi des imformations nésésére a la page d'acueil
+   				   HomePage home = new HomePage(gestionPersonnel, gestionPersonnel.getRoot());
+   				   //rendre visible la page
+   				   home.frame().setVisible(true);
+   				   //prendre le root pour savoir sur la page prochaine que ces le root
+   				   home.getEmploye(gestionPersonnel.getRoot());
+      				//permet de fermet la fenettre actuelle
+   				   frame.dispose();
+   			}
+   			else {
+   				//boucle sur tout les ligue
+   				for(Ligue ligue : gestionPersonnel.getLigues()) {
+   					//boucle sur tout les employers
+      		    	 for(Employe employe : ligue.getEmployes()) {
+      		    	    if(passwordTxt.getText().equals(employe.getPassword()) && login.getText().equals(employe.getMail())) { 
+      		    	    	//envoi des imformations nésésére a la page d'acueil
+      		    			HomePage home = new HomePage(gestionPersonnel, employe);
+      		    			//prendre l'employer pour savoir que ces l'employer
+      		    			home.getEmploye(connectedEmploye);
+      		    			//rendre visible la page
+        				    home.frame().setVisible(true);
+        				    //fermeture de la fenettre de connections
+      		    			frame.dispose();
+      		    		 }
+      		    	 }
+      		     }
+   			//si il as pas quiter la page bat ces que il a rentrer des movaise donnée
+   			passIncorrect.setText("email ou mot de passe incorrect!");
+   			}	
+   		}
+        };
+    }
+       
     
     public static void main(String[] args) throws SauvegardeImpossible
     {
-    	signInPage signInPage = 
-				new signInPage(GestionPersonnel.getGestionPersonnel());
-    	signInPage.gestionPersonnel.getRoot();
+    	signInPage signInPage = new signInPage(GestionPersonnel.getGestionPersonnel());
+    	//rend visible la page de connections
     	signInPage.signIn();
     		      	 
 	}
