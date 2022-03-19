@@ -229,9 +229,13 @@ public class HomePage {
 				@Override
 				public void valueChanged(ListSelectionEvent e) {
 					if (!e.getValueIsAdjusting()){
+						//récupérations de la ou on a cliquer
 			            JList source = (JList)e.getSource();
+			            //récupérations du nom de la ou on a cliquer 
 			            Ligue selected = (Ligue) source.getSelectedValue();
+			            //créations de la prochaine fenettre
 			            listEmployes ligue = new listEmployes(gestionPersonnel,selected, connectedEmploye);
+			            //
 			            ligue.listEmployes();
 			            home.dispose();
 			        }
