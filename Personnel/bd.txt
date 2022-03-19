@@ -1,0 +1,23 @@
+CREATE DATABASE personnel;
+
+USE personnel;
+
+CREATE TABLE LIGUE(
+    num_ligue INT PRIMARY KEY AUTO_INCREMENT,
+    nom_ligue VARCHAR(32)
+);
+
+CREATE TABLE EMPLOYE(
+    id_employe INT PRIMARY KEY  AUTO_INCREMENT,
+    nom_employe VARCHAR(32) NOT NULL,
+    prenom_employe VARCHAR(32) NOT NULL,
+    mail_employe VARCHAR(32) NOT NULL,
+    password_employe VARCHAR(32) NOT NULL,
+    dateArrivee_employe DATETIME,
+    dateDepart_employe DATETIME,
+    admin INT DEFAULT 0,
+    superAdmin INT DEFAULT 0,
+    num_ligue INT NULL,
+    FOREIGN KEY (num_ligue) REFERENCES LIGUE(num_ligue) ON DELETE CASCADE
+);
+

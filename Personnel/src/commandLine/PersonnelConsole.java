@@ -2,16 +2,9 @@ package commandLine;
 
 import personnel.*;
 import commandLineMenus.*;
-import jdbc.Credentials;
-import jdbc.JDBC;
-
 import static commandLineMenus.rendering.examples.util.InOut.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
-import com.mysql.cj.xdevapi.Statement;
 
 public class PersonnelConsole
 {
@@ -80,12 +73,11 @@ public class PersonnelConsole
 		return ok;
 	}
 	
-	public static void main(String[] args)
+	public static void main(String[] args) throws SauvegardeImpossible
 	{
-		JDBC credential = new JDBC();
-		credential.getGestionPersonnel();
 		PersonnelConsole personnelConsole = 
 				new PersonnelConsole(GestionPersonnel.getGestionPersonnel());
+		personnelConsole.gestionPersonnel.getRootBaseDeDonnees();
 		if (personnelConsole.verifiePassword())
 			personnelConsole.start();
 	}

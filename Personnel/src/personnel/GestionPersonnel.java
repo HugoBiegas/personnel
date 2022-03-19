@@ -1,6 +1,7 @@
 package personnel;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -15,14 +16,16 @@ import java.util.TreeSet;
  * retourné.
  */
 
+
 public class GestionPersonnel implements Serializable
 {
 	private static final long serialVersionUID = -105283113987886425L;
 	private static GestionPersonnel gestionPersonnel = null;
 	private SortedSet<Ligue> ligues;
-	private Employe root = new Employe(this, null, "root", "", "", "toor");
+    private SortedSet<Employe> employes;
+	private Employe root = new Employe(this, null, "root", "", "", "toor", null, null);
 	public final static int SERIALIZATION = 1, JDBC = 2, 
-			TYPE_PASSERELLE = SERIALIZATION;  
+			TYPE_PASSERELLE = JDBC;  
 	private static Passerelle passerelle = TYPE_PASSERELLE == JDBC ? new jdbc.JDBC() : new serialisation.Serialization();	
 	
 	/**
@@ -47,6 +50,7 @@ public class GestionPersonnel implements Serializable
 		if (gestionPersonnel != null)
 			throw new RuntimeException("Vous ne pouvez créer qu'une seuls instance de cet objet.");
 		ligues = new TreeSet<>();
+		//employes = new TreeSet<>();
 		gestionPersonnel = this;
 	}
 	
@@ -79,7 +83,14 @@ public class GestionPersonnel implements Serializable
 	{
 		return Collections.unmodifiableSortedSet(ligues);
 	}
+	
+	public SortedSet<Employe> getEmployes()
+	{
+		return Collections.unmodifiableSortedSet(employes);
+	}
 
+	//ajouter une ligue avec son nom et l'id automatiquement générer
+	//si il y aun probléme de sauvegarde ces a code de l'id
 	public Ligue addLigue(String nom) throws SauvegardeImpossible
 	{
 		Ligue ligue = new Ligue(this, nom); 
@@ -87,23 +98,84 @@ public class GestionPersonnel implements Serializable
 		return ligue;
 	}
 	
+	//ajouter un ligue avec son id et son nom 
 	public Ligue addLigue(int id, String nom)
 	{
 		Ligue ligue = new Ligue(this, id, nom);
 		ligues.add(ligue);
 		return ligue;
 	}
-
-	void remove(Ligue ligue)
+	
+	
+	public Employe addEmploye(Ligue id, String nom, String prenom, String mail, String password, LocalDate dateArrivee, LocalDate dateDepart) throws SauvegardeImpossible {
+		   Employe employe = new Employe(this, id, nom, prenom, mail, password, dateArrivee, dateDepart);
+		    employes.add(employe);
+			passerelle.insert(employe);
+		
+		return employe;
+	}
+	
+	public Employe addEmploye(int id, String nom) throws SauvegardeImpossible
 	{
-		ligues.remove(ligue);
+		Employe employe = new Employe(this, id, nom);
+		employes.add(employe);
+		passerelle.insert(employe);
+		return employe;
 	}
 	
 	int insert(Ligue ligue) throws SauvegardeImpossible
 	{
 		return passerelle.insert(ligue);
 	}
+	
+	public boolean haveWritePermission(Ligue ligue, Employe employe) {
+		if(employe.estRoot()) {
+			return true;
+		}
+		else if(ligue.getAdministrateur().equals(employe))
+		{
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	
+	int insert(Employe employe) throws SauvegardeImpossible
+	{
+		return passerelle.insert(employe);
+	}
 
+	void update(Ligue ligue) throws SauvegardeImpossible
+	{
+		passerelle.updateLigue(ligue);
+	}
+	
+	void updateEmploye(Employe employe) throws SauvegardeImpossible
+	{
+		passerelle.updateEmp(employe);
+	}
+	void update(Employe employe, String string) throws SauvegardeImpossible
+	{
+		passerelle.updateEmploye(employe, string);
+	}
+	 void delete(Employe employe) throws SauvegardeImpossible
+	{
+	   passerelle.deleteEmploye(employe);
+		
+	}
+	void delete(Ligue ligue) throws SauvegardeImpossible
+	{
+			passerelle.deleteLigue(ligue);
+		
+	}
+	void remove(Ligue ligue) throws SauvegardeImpossible
+	{
+		
+		gestionPersonnel.delete(ligue);
+		ligues.remove(ligue);
+	}
 	/**
 	 * Retourne le root (super-utilisateur).
 	 * @return le root.
@@ -112,5 +184,48 @@ public class GestionPersonnel implements Serializable
 	public Employe getRoot()
 	{
 		return root;
+	}
+	
+	void changerAdmin(Employe employe) throws SauvegardeImpossible
+	{
+			passerelle.SetAdmin(employe);
+		
+	}
+	
+	public void updateRoot(Employe employe) throws SauvegardeImpossible
+	{
+		passerelle.updateRoot(employe);
+	}
+	
+	void setAdmin(Employe employe)
+	{
+		try
+		{
+			passerelle.setAdmin(employe);
+		}
+		catch(SauvegardeImpossible e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void getRootBaseDeDonnees() throws SauvegardeImpossible
+	{
+		root.setId(1);
+		root = passerelle.getSuperAdmin(root);
+	}
+	
+	public Employe getAdmin(Employe admin) throws SauvegardeImpossible
+	{
+		return gestionPersonnel.getAdmin(admin);
+	}
+	
+	void removeAdmin(Ligue ligue)
+	{
+		try {
+			passerelle.removeAdmin(ligue);
+		} catch (SauvegardeImpossible e) {
+			e.printStackTrace();
+		}
 	}
 }
