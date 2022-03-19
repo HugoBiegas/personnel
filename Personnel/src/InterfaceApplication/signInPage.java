@@ -21,6 +21,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -37,7 +38,7 @@ public class signInPage{
     listEmployes listemp;
     Ligue ligue;
     Employe employe;
-    private JTextField passwordTxt;
+    private JPasswordField passwordTxt;
     private JTextField login;
     private JFrame frame = new JFrame();
     Employe connectedEmploye;
@@ -141,9 +142,9 @@ public class signInPage{
         return passwordL;
     }
     
-    private JTextField passInput()
+    private JPasswordField passInput()
     {
-    	passwordTxt = new JTextField();
+    	passwordTxt = new JPasswordField();
         return passwordTxt;
     }
     private JLabel passwordFailed() 
@@ -170,14 +171,14 @@ public class signInPage{
    		@Override
    		public void actionPerformed(ActionEvent arg0) {
    			int cpt=0;
+   			//récupérer le mdp
+   			String p= new String(passwordTxt.getPassword());
    			//teste le champs password et mail de root
-   			if(passwordTxt.getText().equals(gestionPersonnel.getRoot().getPassword()) && login.getText().equals(gestionPersonnel.getRoot().getMail())){
+   			if(p.equals(gestionPersonnel.getRoot().getPassword()) && login.getText().equals(gestionPersonnel.getRoot().getMail())){
 	    	    	//envoi des imformations nésésére a la page d'acueil
    				   HomePage home = new HomePage(gestionPersonnel, gestionPersonnel.getRoot());
    				   //rendre visible la page
    				   home.frame().setVisible(true);
-   				   //prendre le root pour savoir sur la page prochaine que ces le root
-   				   home.getEmploye(gestionPersonnel.getRoot());
       				//permet de fermet la fenettre actuelle
    				   frame.dispose();
    			}
@@ -186,11 +187,9 @@ public class signInPage{
    				for(Ligue ligue : gestionPersonnel.getLigues()) {
    					//boucle sur tout les employers
       		    	 for(Employe employe : ligue.getEmployes()) {
-      		    	    if(passwordTxt.getText().equals(employe.getPassword()) && login.getText().equals(employe.getMail())) { 
+      		    	    if(p.equals(employe.getPassword()) && login.getText().equals(employe.getMail())) { 
       		    	    	//envoi des imformations nésésére a la page d'acueil
       		    			HomePage home = new HomePage(gestionPersonnel, employe);
-      		    			//prendre l'employer pour savoir que ces l'employer
-      		    			home.getEmploye(connectedEmploye);
       		    			//rendre visible la page
         				    home.frame().setVisible(true);
         				    //fermeture de la fenettre de connections

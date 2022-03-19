@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -62,42 +64,45 @@ public class HomePage {
 		    this.gestionPersonnel = gestionPersonnel;
 		    this.connectedEmploye = connectedEmploye;
 	 }
-
-
-	public void Home() {
-		frame().setVisible(true);
-    }
-	
-	
-	public Employe getEmploye(Employe employe) {
-		return employe = employe;
-	}
 	 
-	
 	public JFrame frame()
 	{
-		JFrame home = new JFrame();
-		home.getContentPane().setBackground(Color.decode("#cbc0d3"));
+		//background  
+		home.getContentPane().setBackground(Color.decode("#0080ff"));
+		//taille
 		home.setSize(700,700);
-		home.setLocationRelativeTo(null);
-		home.setTitle("Home page");
+		//titre
+		home.setTitle("Page d'acueil");
+		//menu
 		home.setJMenuBar(menuBar());
+   	 	//center la fenettre
+   	 	home.setLocationRelativeTo(null);
+		//la grille
 		home.setLayout(new GridBagLayout());
+		//la panel aux milieux
 		home.add(panelContainer());
+		//quiter
 		home.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//pour pas qu'il puisse modifier
+		home.setResizable(false);
+		//icone
+   	 	Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");  
+   	 	home.setIconImage(icon); 
 		 return home;
 	}
 	
 	private JPanel panelContainer()
 	 {
 		 JPanel panelContainer = new JPanel();
-		 panelContainer.setBackground(Color.decode("#feeafa"));
+		 panelContainer.setBackground(Color.decode("#9f9f9f"));
 		 panelContainer.setMinimumSize(new Dimension(500,350));
 		 BorderLayout layout = new BorderLayout();
 		 layout.setVgap(30);
 		 panelContainer.setLayout(layout);
 		 Box boxaddLigueBtn = Box.createHorizontalBox();
+		 //center les composent
 	     boxaddLigueBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+	     //ajouter le bouton
 		 boxaddLigueBtn.add(addLigueBtn());
 		 	 
 		 panelContainer.add(title(), BorderLayout.NORTH);
@@ -123,20 +128,25 @@ public class HomePage {
 		 addLigueBtn.setFont(new Font("Serif", Font.BOLD, 20));
 		 addLigueBtn.setBackground(Color.decode("#540b0e"));
 		 addLigueBtn.setForeground(Color.decode("#fafafa"));
-		 addLigueBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String inputValue = JOptionPane.showInputDialog("Nom de la ligue"); 
-				try {
-					gestionPersonnel.addLigue(inputValue);
-				} catch (SauvegardeImpossible e1) {
-					e1.printStackTrace();
-				}
-				frame().setVisible(false);
-				frame().setVisible(true);
-			}
-		});
+		 addLigueBtn.addActionListener(actionAjou());
 		 return addLigueBtn;
+	 }
+	 
+	 private ActionListener actionAjou() {
+		 return new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					home.dispose();
+					String inputValue = JOptionPane.showInputDialog("Nom de la ligue"); 
+					try {
+						gestionPersonnel.addLigue(inputValue);
+					} catch (SauvegardeImpossible e1) {
+						e1.printStackTrace();
+					}
+					HomePage home = new HomePage(gestionPersonnel, connectedEmploye);
+					home.frame().setVisible(true);
+				}
+			};
 	 }
 	 
 	 
@@ -151,10 +161,12 @@ public class HomePage {
 		 JMenuBar menubar = new JMenuBar();
 		 menubar.setPreferredSize(new Dimension(60,60));
 		 JMenu menu = new JMenu("Compte root");
+		 //itéme quand cliquer sur le btn
 		 menu.add(menuItem());
+		 //stuyle btn
 		 menu.setFont(new Font("Serif", Font.BOLD, 20));
 		 menu.setForeground(Color.decode("#fafafa"));
-		 menubar.setBackground(Color.decode("#6f1d1b"));
+		 menubar.setBackground(Color.decode("#9f9f9f"));
 		 menubar.add(menu);
 		return menubar;
 	 }
@@ -162,66 +174,78 @@ public class HomePage {
 	 
 	 private JMenuItem menuItem()
 	 {
-		 JMenuItem itemMenu = new JMenuItem("G�rer le compte root");
+		 JMenuItem itemMenu = new JMenuItem("Gérer le compte root");
 		 itemMenu.setFont(new Font("Serif", Font.PLAIN, 20));
-		 itemMenu.setBackground(Color.decode("#540b0e"));
+		 itemMenu.setBackground(Color.decode("#9f9f9f"));
 		 itemMenu.setForeground(Color.decode("#fafafa"));
-		 itemMenu.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				if(connectedEmploye.equals(gestionPersonnel.getRoot())) {
-					RootData root = new RootData(gestionPersonnel, connectedEmploye);
-					root.AccountData();
-				}else {
-					JOptionPane.showMessageDialog(null, "Vous n'avez pas l'acc�s � cette page", "droits insuffisants", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
+		 //actions pour chaque itéme
+		 itemMenu.addActionListener(itemAction());
 		 return itemMenu;
+	 }
+	 
+	 private ActionListener itemAction() {
+		 return new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//on regarde si la personne qui clique ces le root ou pas 
+					if(connectedEmploye.equals(gestionPersonnel.getRoot())) {
+						RootData root = new RootData(gestionPersonnel, connectedEmploye);
+						root.AccountData();
+					}else {
+						JOptionPane.showMessageDialog(null, "Vous n'avez pas l'accés à cette page", "droits insuffisants", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			};
 	 }
 	 
 	  
 	 public JList<Ligue>  listLigues()
 	 {
+		 //récupérations des ligue
 		 SortedSet<Ligue> choix = gestionPersonnel.getLigues();
 		 JList<Ligue> listLigues = new JList<>();
 		 listLigues.setOpaque(true);
 		 DefaultListModel<Ligue> listLigue = new DefaultListModel<>();
 		 listLigues.setFont(new Font("Serif", Font.BOLD, 22));
+		 //permet de prendre la model
 		 listLigues.setModel(listLigue);
 		 for (Ligue ligue : choix) {
 			   listLigue.addElement(ligue);
 			}
-		 listLigues.addListSelectionListener(new ListSelectionListener() {
-			
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (!e.getValueIsAdjusting()){
-		            JList source = (JList)e.getSource();
-		            Ligue selected = (Ligue) source.getSelectedValue();
-		            listEmployes ligue = new listEmployes(gestionPersonnel,selected, connectedEmploye);
-		            ligue.listEmployes();
-		        }
-				
-			}
-		});
+		 listLigues.addListSelectionListener(ItemAction());
+		 //permet de prendre la model
 		 listLigues.setModel(listLigue);
-		 listLigues.setBackground(Color.decode("#feeafa"));
+		 listLigues.setBackground(Color.decode("#9f9f9f"));
 		 listLigues.setForeground(Color.decode("#540b0e"));
 		 DefaultListCellRenderer renderer =  (DefaultListCellRenderer)listLigues.getCellRenderer();  
 		 renderer.setHorizontalAlignment(JLabel.CENTER);
 		 listLigues.setFixedCellHeight(50);
 		 return listLigues;
 	 }
+	 private ListSelectionListener ItemAction() {
+		 return new ListSelectionListener() {
+				
+				@Override
+				public void valueChanged(ListSelectionEvent e) {
+					if (!e.getValueIsAdjusting()){
+			            JList source = (JList)e.getSource();
+			            Ligue selected = (Ligue) source.getSelectedValue();
+			            listEmployes ligue = new listEmployes(gestionPersonnel,selected, connectedEmploye);
+			            ligue.listEmployes();
+			            home.dispose();
+			        }
+					
+				}
+			}; 
+	 }
 	 
 	 private JScrollPane scrollList()
 	 {
 	    JScrollPane scrollpane = new JScrollPane(listLigues());
+	    //taille de la liste des ligue
 	    scrollpane.setPreferredSize(new Dimension(450,300));
-	    scrollpane.getViewport().setBackground(Color.decode("#feeafa"));
-	    scrollpane.setBorder(BorderFactory.createLineBorder(Color.decode("#540b0e"), 1));
+	    scrollpane.getViewport().setBackground(Color.decode("#9f9f9f"));
 	    return scrollpane;
 	 }
 	 
@@ -230,16 +254,6 @@ public class HomePage {
 		 JPanel panel = new JPanel();
 		 panel.add(scrollList());
 		 return panel;
-	 }
-	
-
-	 /**
-	 * @return
-	 */
-	 
-	 public  Ligue getLigue()
-	 {
-		 return ligue;
 	 }
 	 
 }
