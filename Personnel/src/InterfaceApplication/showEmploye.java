@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -48,6 +50,8 @@ public class showEmploye {
 	private  Employe selectedEmploye;
 	private  Ligue ligue;
 	private  Employe connectedEmploye;
+	private  JFrame employeData = new JFrame();
+
 	
 	public showEmploye(GestionPersonnel gestionPersonnel, Employe selectedEmploye, Ligue ligue, Employe connectedEmploye) {
 		   this.gestionPersonnel = gestionPersonnel;
@@ -63,13 +67,17 @@ public class showEmploye {
 
 	public JFrame frame()
 	{
-		JFrame employeData = new JFrame();
-		employeData.getContentPane().setBackground(Color.decode("#cbc0d3"));
+		employeData.getContentPane().setBackground(Color.decode("#0080ff"));
 		employeData.setLayout(new GridBagLayout());
 		employeData.add(container());
 		employeData.setSize(700,700);
 		employeData.setLocationRelativeTo(null);
 		employeData.setJMenuBar(menuBar());
+   	 	//icon en haut a gauche
+   	 	Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");  
+   	 	employeData.setIconImage(icon); 
+        //permet de faire que la personne ne peux pas modifier la taille de la fenettre
+   		employeData.setResizable(false);
 		employeData.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		return employeData;
 	}
@@ -79,7 +87,7 @@ public class showEmploye {
 		 JMenuBar menubar = new JMenuBar();
 		 menubar.setPreferredSize(new Dimension(60,60));
 		 menubar.add(menuLigues());
-		 menubar.setBackground(Color.decode("#540b0e"));
+		 menubar.setBackground(Color.decode("#9f9f9f"));
 		return menubar;
 	}
 	private JMenu menuLigues()
@@ -94,21 +102,28 @@ public class showEmploye {
 	
 	 private JMenuItem menuItem()
 	 {
-		 JMenuItem itemMenu = new JMenuItem("GÈrer mon compte");
+		 JMenuItem itemMenu = new JMenuItem("G√©rer mon compte");
 		 itemMenu.setFont(new Font("Serif", Font.PLAIN, 20));
-		 itemMenu.setBackground(Color.decode("#540b0e"));
+		 itemMenu.setBackground(Color.decode("#9f9f9f"));
 		 itemMenu.setForeground(Color.decode("#fafafa"));
-		 itemMenu.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				    frame().setVisible(false);
-					RootData account = new RootData(gestionPersonnel, connectedEmploye);
-					account.AccountData();
-			}
-		});
+		 itemMenu.addActionListener(g√©rerCompte());
 		 return itemMenu;
 	 }
+	 
+	 private ActionListener g√©rerCompte() {
+		 return new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+						employeData.dispose();
+						RootData account = new RootData(gestionPersonnel, connectedEmploye);
+						account.AccountData();
+				}
+			};
+	 }
+	 
+	 
+	 
 	private JPanel data()
 	{
 		JPanel panelLabels = new JPanel();
@@ -120,15 +135,19 @@ public class showEmploye {
 		ArrayList<JLabel> labels = new ArrayList<>();
 		labels.add(new JLabel("Nom : "));
 		labels.add(new JLabel(selectedEmploye.getNom()));
-		labels.add(new JLabel("PrÈnom : "));
+		labels.add(new JLabel("Pr√©nom : "));
 		labels.add(new JLabel(selectedEmploye.getPrenom()));
 		labels.add(new JLabel("Email :"));
 		labels.add(new JLabel(selectedEmploye.getMail()));
 		labels.add(new JLabel("Password : "));
-		labels.add(new JLabel(selectedEmploye.getPassword()));
-		labels.add(new JLabel("Date d'arrivÈe (Y-m-d) : "));
+		String pasword = "";
+		for(int i=0;i<selectedEmploye.getPassword().length();i++) {
+			pasword+="*";
+		}
+		labels.add(new JLabel(pasword));
+		labels.add(new JLabel("Date d'arriv√©e (Y-m-d) : "));
 		labels.add(new JLabel(String.valueOf(selectedEmploye.getDateArrivee())));
-		labels.add(new JLabel("Date de dÈpart (Y-m-d) : "));
+		labels.add(new JLabel("Date de d√©part (Y-m-d) : "));
 		labels.add(new JLabel(String.valueOf(selectedEmploye.getDateDepart())));
 		for(JLabel jlabel : labels) 
 		{
@@ -190,7 +209,11 @@ public class showEmploye {
 		back.setBackground(Color.decode("#540b0e"));
 		back.setFont(new Font("Serif", Font.BOLD, 19));
 		back.setForeground(Color.decode("#fafafa"));
-		back.addActionListener(new ActionListener() {
+		back.addActionListener(backAction());
+		return back;
+	}
+	private ActionListener backAction() {
+		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -198,13 +221,12 @@ public class showEmploye {
 					 listEmployes list = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
 					 list.frame().setVisible(true);
 			}
-		});
-		return back;
+		};
 	}
 	
 	private JButton edit()
 	{
-		JButton edit = new JButton("Editer l'employÈ");
+		JButton edit = new JButton("Editer");
 		  if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye)) {
 			  edit.setEnabled(false);
 		 }
@@ -212,7 +234,12 @@ public class showEmploye {
 		edit.setFont(new Font("Serif", Font.BOLD, 19));
 		edit.setBackground(Color.decode("#540b0e"));
 		edit.setForeground(Color.decode("#fafafa"));
-		edit.addActionListener(new ActionListener() {
+		edit.addActionListener(editAction());
+		return edit;
+	}
+	
+	private ActionListener editAction() {
+		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -220,21 +247,23 @@ public class showEmploye {
 				editEmploye edit = new editEmploye(gestionPersonnel, selectedEmploye, ligue, connectedEmploye);
 				edit.listData();
 			}
-		});
-		return edit;
+		};
 	}
 	
 	private JButton delete()
 	{
-		JButton delete = new JButton("Supprimer l'employÈ");
+		JButton delete = new JButton("Supprimer");
 		if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye)) {
 			delete.setEnabled(false);
 		 }
 		delete.setBackground(Color.decode("#540b0e"));
 		delete.setForeground(Color.decode("#fafafa"));
 		delete.setFont(new Font("Serif", Font.BOLD, 19));
-		delete.addActionListener(new ActionListener() {
-			
+		delete.addActionListener(deleteAction());
+		return delete;
+	}
+	private ActionListener deleteAction() {
+		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 					try {
@@ -242,42 +271,45 @@ public class showEmploye {
 					} catch (SauvegardeImpossible e1) {
 						e1.printStackTrace();
 					}
-					JOptionPane.showMessageDialog(null, "L'employÈ a ÈtÈ supprimÈ", "supprimer l'employÈ", JOptionPane.INFORMATION_MESSAGE);
-					frame().setVisible(false);
-					frame().dispose();
+					JOptionPane.showMessageDialog(null, "L'employ√© a √©t√© supprim√©", "supprimer l'employ√©", JOptionPane.INFORMATION_MESSAGE);
+					employeData.dispose();
 					listEmployes employesPage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
 					employesPage.listEmployes();
 				}
-		});
-		return delete;
+		};
 	}
 	
 	private JButton setAdmin()
 	{
 		JButton btn = new JButton();
+		//mettre qu'il est dejat admin 
 		if(selectedEmploye.estAdmin(ligue)) {
 			btn.setText("Admin de ligue");
 		}
+		//mettre le faire de mettre admin
 		else if(!selectedEmploye.estAdmin(ligue)) {
 			btn.setText("Mettre en admin");
 		}
-		
+		//si il est pas admin ou root
 		if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye)) {
 			btn.setEnabled(false);
 		 }
 		btn.setBackground(Color.decode("#540b0e"));
 		btn.setForeground(Color.decode("#fafafa"));
 		btn.setFont(new Font("Serif", Font.BOLD, 19));
-		btn.addActionListener(new ActionListener() {
+		btn.addActionListener(setAdminAction());
+		return btn;
+	}
+	private ActionListener setAdminAction() {
+		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(!selectedEmploye.estAdmin(ligue)) {
 					ligue.setAdministrateur(selectedEmploye);
 					ligue.setAdmin(selectedEmploye);
-					JOptionPane.showMessageDialog(null, "L'ÈmployÈ est maintenant l'admin de la ligue" + ligue.getNom() + ".", "Nommer admin", JOptionPane.INFORMATION_MESSAGE);
-					frame().setVisible(false);
-					frame().dispose();
+					JOptionPane.showMessageDialog(null, "L'√©mploy√© est maintenant l'admin de la ligue" + ligue.getNom() + ".", "Nommer admin", JOptionPane.INFORMATION_MESSAGE);
+					employeData.dispose();
 					listEmployes employesPage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
 					employesPage.listEmployes();
 				}
@@ -287,13 +319,14 @@ public class showEmploye {
 					} catch (SauvegardeImpossible e) {
 						e.printStackTrace();
 					} 
-					frame().setVisible(false);
-					frame().dispose();
+					employeData.dispose();
 					listEmployes employesPage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
 					employesPage.listEmployes();
 				}
 			}
-		});
-		return btn;
+		};
 	}
+	
+	
+	
 }

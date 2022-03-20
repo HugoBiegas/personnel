@@ -190,8 +190,11 @@ public class HomePage {
 				public void actionPerformed(ActionEvent e) {
 					//on regarde si la personne qui clique ces le root ou pas 
 					if(connectedEmploye.equals(gestionPersonnel.getRoot())) {
+						//envoi des donnée
 						RootData root = new RootData(gestionPersonnel, connectedEmploye);
+						//rendre visible la page
 						root.AccountData();
+						home.dispose();
 					}else {
 						JOptionPane.showMessageDialog(null, "Vous n'avez pas l'accés à cette page", "droits insuffisants", JOptionPane.ERROR_MESSAGE);
 					}

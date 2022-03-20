@@ -175,6 +175,15 @@ public class Ligue implements Serializable, Comparable<Ligue>
 	@Override
 	public int compareTo(Ligue autre)
 	{
+		//si la lisgue et null ou vide elle est suprimer
+		if(autre.getNom() ==null || autre.getNom().equals("")) {
+		try {
+			gestionPersonnel.remove(autre);
+		} catch (SauvegardeImpossible e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
 		return getNom().compareTo(autre.getNom());
 	}
 	

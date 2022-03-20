@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -19,6 +21,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import commandLine.DateInvalideException;
@@ -35,11 +38,13 @@ public class editEmploye {
     JTextField nom;
     JTextField prenom;
     JTextField mail;
-    JTextField password;
+    JPasswordField password;
     JTextField dateArrive;
     JTextField dateDepart;
     private Employe connectedEmploye;
     private Ligue ligue;
+    private JFrame employes = new JFrame();
+
     
 	public editEmploye(GestionPersonnel gestionPersonnel, Employe employe, Ligue ligue, Employe connectedEmploye) {
 		   this.gestionPersonnel = gestionPersonnel;
@@ -56,13 +61,17 @@ public class editEmploye {
 	
 	public JFrame frame()
 	{
-		JFrame employes = new JFrame();
-		employes.getContentPane().setBackground(Color.decode("#cbc0d3"));
+		employes.getContentPane().setBackground(Color.decode("#0080ff"));
 		employes.setSize(700,700);
 		employes.setLocationRelativeTo(null);
 		employes.setJMenuBar(menuBar());
 		employes.setLayout(new GridBagLayout());
 		employes.add(panel());
+   	 	//icon en haut a gauche
+   	 	Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");  
+   	 	employes.setIconImage(icon); 
+        //permet de faire que la personne ne peux pas modifier la taille de la fenettre
+   	 	employes.setResizable(false);
 		employes.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		return employes;
 	}
@@ -77,15 +86,15 @@ public class editEmploye {
 		 menu.setSize(70,70);
 		 menu.setForeground(Color.decode("#fafafa"));
 		 menubar.add(menu);
-		 menubar.setBackground(Color.decode("#6f1d1b"));
+		 menubar.setBackground(Color.decode("#9f9f9f"));
 		return menubar;
 	 }
 
 	 private JMenuItem menuItem()
 	 {
-		 JMenuItem itemMenu = new JMenuItem("Gérer mon compte");
+		 JMenuItem itemMenu = new JMenuItem("GÃ©rer mon compte");
 		 itemMenu.setFont(new Font("Serif", Font.PLAIN, 20));
-		 itemMenu.setBackground(Color.decode("#540b0e"));
+		 itemMenu.setBackground(Color.decode("#9f9f9f"));
 		 itemMenu.setForeground(Color.decode("#fafafa"));
 		 itemMenu.addActionListener(new ActionListener() {
 			
@@ -104,7 +113,8 @@ public class editEmploye {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.decode("#cbc0d3"));
 		panel.setLayout(new GridLayout(0,2, 25,25));
-		panel.setPreferredSize(new Dimension(750,650));		
+		panel.setPreferredSize(new Dimension(750,650));	
+		//le texte suivie de la zone de texte
 		panel.add(nomL());
 		panel.add(nameInput());
 		panel.add(prenomL());
@@ -156,7 +166,7 @@ public class editEmploye {
 	
 	private JLabel dateArriveeL()
 	{
-		JLabel dateArriveeL = new JLabel("Date d'arrivée : ");
+		JLabel dateArriveeL = new JLabel("Date d'arrivÃ©e : ");
 		dateArriveeL.setFont(new Font("Serif", Font.PLAIN, 22));
 		dateArriveeL.setForeground(Color.decode("#540b0e"));
 		 return dateArriveeL;	
@@ -164,7 +174,7 @@ public class editEmploye {
 	
 	private JLabel dateDepartL()
 	{
-		JLabel dateDepartL = new JLabel("Date de départ : ");
+		JLabel dateDepartL = new JLabel("Date de dÃ©part : ");
 		dateDepartL.setFont(new Font("Serif", Font.PLAIN, 22));
 		dateDepartL.setForeground(Color.decode("#540b0e"));
 		 return dateDepartL;	
@@ -247,9 +257,9 @@ public class editEmploye {
 		return mail;
 	}
 	
-	private  JTextField passwordInput()
+	private  JPasswordField passwordInput()
 	{
-		password = new JTextField();
+		password = new JPasswordField();
 		password.setEditable(true);
 		password.setText(employe.getPassword());
 		return password;

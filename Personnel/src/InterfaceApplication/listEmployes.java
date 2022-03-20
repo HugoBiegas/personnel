@@ -7,10 +7,13 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.SortedSet;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -61,19 +64,24 @@ public class listEmployes {
 
 	public JFrame frame()
 	{
-		employes.getContentPane().setBackground(Color.decode("#cbc0d3"));
+		employes.getContentPane().setBackground(Color.decode("#0080ff"));
 		employes.setSize(700,700);
 		employes.setLocationRelativeTo(null);
 		employes.setJMenuBar(menuBar());
 		employes.setLayout(new GridBagLayout());
 		employes.add(container());
+   	 	//icon en haut a gauche
+   	 	Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");  
+   	 	employes.setIconImage(icon); 
+        //permet de faire que la personne ne peux pas modifier la taille de la fenettre
+   	 	employes.setResizable(false);
 		employes.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		return employes;
 	}
 	private JPanel container()
 	{
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.decode("#cbc0d3"));
+		panel.setBackground(Color.decode("#9f9f9f"));
 		panel.setMinimumSize(new Dimension(500,500));
 		BorderLayout layout = new BorderLayout();
 		layout.setVgap(25);
@@ -91,7 +99,7 @@ public class listEmployes {
 		GridLayout layout = new GridLayout(2,1);
 		layout.setVgap(15);
 		panel.setLayout(layout);
-		panel.setBackground(Color.decode("#cbc0d3"));
+		panel.setBackground(Color.decode("#9f9f9f"));
 		Box back = Box.createHorizontalBox();
 		back.add(back());
 		panel.add(back);
@@ -103,7 +111,7 @@ public class listEmployes {
 	{
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(200,500));
-		panel.setBackground(Color.decode("#feeafa"));
+		panel.setBackground(Color.decode("#E9967A"));
 		if(ligue.getEmployes().size() > 0)
 		{
 			panel.add(list());
@@ -115,7 +123,7 @@ public class listEmployes {
 	
 	private JLabel notEmployesFunded()
 	{
-		JLabel label = new JLabel("Il y a aucun employ� dans cette ligue");
+		JLabel label = new JLabel("Il y a aucun employé dans cette ligue");
 		label.setFont(new Font("Serif", Font.BOLD, 22));
 		label.setForeground(Color.decode("#cbc0d3"));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -127,7 +135,7 @@ public class listEmployes {
 		 JMenuBar menubar = new JMenuBar();
 		 menubar.setPreferredSize(new Dimension(60,60));
 		 menubar.add(menuLigues());
-		 menubar.setBackground(Color.decode("#540b0e"));
+		 menubar.setBackground(Color.decode("#9f9f9f"));
 		return menubar;
 	}
 	
@@ -143,20 +151,24 @@ public class listEmployes {
 	
 	 private JMenuItem menuItem()
 	 {
-		 JMenuItem itemMenu = new JMenuItem("G�rer mon compte");
+		 JMenuItem itemMenu = new JMenuItem("Gérer mon compte");
 		 itemMenu.setFont(new Font("Serif", Font.PLAIN, 20));
-		 itemMenu.setBackground(Color.decode("#540b0e"));
+		 itemMenu.setBackground(Color.decode("#9f9f9f"));
 		 itemMenu.setForeground(Color.decode("#fafafa"));
-		 itemMenu.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				    frame().setVisible(false);
-					RootData account = new RootData(gestionPersonnel, connectedEmploye);
-					account.AccountData();
-			}
-		});
+		 itemMenu.addActionListener(menutAction());
 		 return itemMenu;
+	 }
+	 
+	 private ActionListener menutAction() {
+		 return new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					    frame().setVisible(false);
+						RootData account = new RootData(gestionPersonnel, connectedEmploye);
+						account.AccountData();
+				}
+			};
 	 }
 	
 	public JList<Employe> list()
@@ -165,12 +177,25 @@ public class listEmployes {
 		JList<Employe> empL = new JList<>();
 		DefaultListModel<Employe> listEmp = new DefaultListModel<>();
 		empL.setModel(listEmp);
-		
+		//utilisateions des model pour mettre tout les employer
 		for(Employe employe : emp)
 		{
 			listEmp.addElement(employe);
 		}
-		empL.addListSelectionListener(new ListSelectionListener() {
+		empL.addListSelectionListener(listeEploye());
+		 empL.setFont(new Font("Serif", Font.BOLD, 22));
+		 empL.setBackground(Color.decode("#E9967A"));
+		 empL.setForeground(Color.decode("#540b0e"));
+		 DefaultListCellRenderer renderer =  (DefaultListCellRenderer)empL.getCellRenderer();  
+		 renderer.setHorizontalAlignment(JLabel.CENTER);
+		 empL.setFixedCellWidth(500);
+		 empL.setFixedCellHeight(40);
+		 
+		return empL;
+	}
+	
+	private ListSelectionListener listeEploye() {
+		return new ListSelectionListener() {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -182,20 +207,13 @@ public class listEmployes {
 		            employe.employeShow();
 		        }
 			}
-		});
-		 empL.setFont(new Font("Serif", Font.BOLD, 22));
-		 empL.setBackground(Color.decode("#feeafa"));
-		 empL.setForeground(Color.decode("#540b0e"));
-		 DefaultListCellRenderer renderer =  (DefaultListCellRenderer)empL.getCellRenderer();  
-		 renderer.setHorizontalAlignment(JLabel.CENTER);
-		 empL.setFixedCellWidth(500);
-		 empL.setFixedCellHeight(40);
-		return empL;
+		};
 	}
 	
 	private JLabel titleLigue()
 	{
 		JLabel title = new JLabel();
+		//nom de la ligue et de l'admin
 		title.setText(ligue.getNom() + " administrée par  " + ligue.getAdministrateur().getNom());
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("Serif", Font.BOLD, 27));
@@ -207,7 +225,7 @@ public class listEmployes {
 	{
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(650,150));
-		panel.setBackground(Color.decode("#cbc0d3"));
+		panel.setBackground(Color.decode("#9f9f9f"));
 		FlowLayout layout = new FlowLayout();
 		panel.setLayout(layout);
 		
@@ -222,8 +240,8 @@ public class listEmployes {
 		Box addEmploye = Box.createHorizontalBox();
 		addEmploye.add(addEmploye());
 		
-		panel.add(deleteLigue());
-		panel.add(renameLigue());
+		panel.add(delete);
+		panel.add(rename);
 		panel.add(addEmploye);
 		return panel;
 	}
@@ -238,18 +256,20 @@ public class listEmployes {
 	    renameLigue.setForeground(Color.decode("#fafafa"));
 	    renameLigue.setBackground(Color.decode("#540b0e"));
 	    renameLigue.setPreferredSize(new Dimension(200,35));
-	    renameLigue.addActionListener(new ActionListener() {
+	    renameLigue.addActionListener(renameLigueAction());
+	    return renameLigue;
+	}
+	private ActionListener renameLigueAction() {
+		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String inputValue = JOptionPane.showInputDialog("Nom de la ligue"); 
 				ligue.setNom(inputValue);
 				HomePage pageLigues = new HomePage(gestionPersonnel, connectedEmploye);
-				frame().setVisible(false);
-				frame().dispose();
+				employes.dispose();
 				pageLigues.frame().setVisible(true);
 			}
-		});
-	    return renameLigue;
+		};
 	}
 	
 	
@@ -263,7 +283,11 @@ public class listEmployes {
 		deleteLigue.setForeground(Color.decode("#fafafa"));
 		deleteLigue.setBackground(Color.decode("#540b0e"));
 		deleteLigue.setPreferredSize(new Dimension(200,35));
-		deleteLigue.addActionListener(new ActionListener() {
+		deleteLigue.addActionListener(deletLigueAction());
+		return deleteLigue;
+	}
+	private ActionListener deletLigueAction() {
+		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -274,12 +298,10 @@ public class listEmployes {
 				}
 				JOptionPane.showMessageDialog(null, "la ligue a �t� supprim�e", "supprimer la ligue", JOptionPane.INFORMATION_MESSAGE);
 				HomePage pageLigues = new HomePage(gestionPersonnel, connectedEmploye);
-				frame().setVisible(false);
 				frame().dispose();
 				pageLigues.frame().setVisible(true);
 			}
-		});
-		return deleteLigue;
+		};
 	}
 	
 	private JButton back()
@@ -289,16 +311,19 @@ public class listEmployes {
 		btn.setForeground(Color.decode("#fafafa"));
 		btn.setPreferredSize(new Dimension(130,30));
 		btn.setFont(new Font("Serif", Font.PLAIN, 22));
-		btn.addActionListener(new ActionListener() {
+		btn.addActionListener(backAction());
+		return btn;
+	}
+	private ActionListener backAction() {
+		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				HomePage pageLigues = new HomePage(gestionPersonnel, connectedEmploye);
-				frame().setVisible(false);
+				employes.dispose();
 				pageLigues.frame().setVisible(true);
 			}
-		});
-		return btn;
+		};
 	}
 	
 	private JButton addEmploye()
@@ -310,15 +335,19 @@ public class listEmployes {
 		addEmploye.setFont(new Font("Serif", Font.BOLD, 20));
 		addEmploye.setBackground(Color.decode("#540b0e"));
 		addEmploye.setForeground(Color.decode("#fafafa"));
-		addEmploye.addActionListener(new ActionListener() {
+		addEmploye.addActionListener(addEmployerAction());
+		return addEmploye;
+	}
+	
+	private ActionListener addEmployerAction() {
+		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				AddChangeEmploye add = new AddChangeEmploye(gestionPersonnel, ligue, connectedEmploye);
-				frame().setVisible(false);
+				employes.dispose();
 				add.AddEmploye();
 			}
-		});
-		return addEmploye;
+		};
 	}
 
 }

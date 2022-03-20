@@ -65,15 +65,15 @@ public class signInPage{
     	 frame.setSize(600,600);
     	 //center la fenettre
     	 frame.setLocationRelativeTo(null);
-    	 //icon en haut a gauche
-    	 Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");  
-    	 frame.setIconImage(icon); 
     	 //mise en place d'une grille complexe de ligne et colone
          frame.setLayout(new GridBagLayout());
          //permet de fermet proprement les Jframe
          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
          //ajouter le contenu
          frame.add(container());
+    	 //icon en haut a gauche
+    	 Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");  
+    	 frame.setIconImage(icon); 
          //permet de faire que la personne ne peux pas modifier la taille de la fenettre
          frame.setResizable(false);
     	 return frame;

@@ -5,15 +5,19 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -27,10 +31,12 @@ private GestionPersonnel gestionPersonnel;
 private JTextField nom;
 private JTextField prenom;
 private JTextField email;
-private JTextField pass;
+private JPasswordField pass;
 private Employe connectedEmploye;
 private JTextField arrive;
 private JTextField depart;
+private JFrame root = new JFrame();
+
 	public EditRoot(GestionPersonnel gestionPersonnel, Employe connectedEmploye) {
 		  this.gestionPersonnel = gestionPersonnel;
 		  this.connectedEmploye = connectedEmploye;
@@ -38,14 +44,18 @@ private JTextField depart;
 	
 	public JFrame frame()
 	{
-		JFrame root = new JFrame();
-		root.getContentPane().setBackground(Color.decode("#cbc0d3"));
+		root.getContentPane().setBackground(Color.decode("#0080ff"));
 		root.setTitle("Editer le root");
 		root.setSize(700,700);
 		root.setLocationRelativeTo(null);
 		root.setLayout(new GridBagLayout());
 		root.setJMenuBar(menuBar());
 		root.add(panelContainer());
+   	 	//icon en haut a gauche
+   	 	Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");  
+   	 	root.setIconImage(icon); 
+        //permet de faire que la personne ne peux pas modifier la taille de la fenettre
+   	 	root.setResizable(false);
 		root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		return root;
 	}
@@ -53,7 +63,7 @@ private JTextField depart;
 	 {
 		 JMenuBar menubar = new JMenuBar();
 		 menubar.setPreferredSize(new Dimension(50,50));
-		 menubar.setBackground(Color.decode("#540b0e"));
+		 menubar.setBackground(Color.decode("#9f9f9f"));
 		 JMenu menu = new JMenu("Compte root");
 		 menu.setAlignmentX(SwingConstants.WEST);
 		 menu.setFont(new Font("Serif", Font.BOLD, 20));
@@ -74,7 +84,8 @@ private JTextField depart;
 	private JPanel labelAndInput()
 	{
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.decode("#cbc0d3"));
+		panel.setBackground(Color.decode("#9f9f9f"));
+		panel.setBorder(BorderFactory.createLineBorder(Color.decode("#cbc0d3"), 3));
 		//panel.setPreferredSize(new Dimension(350,350));
 		GridLayout layout = new GridLayout(0,2);
 		layout.setVgap(40);
@@ -88,12 +99,14 @@ private JTextField depart;
 		panel.add(emailInput());
 		panel.add(pass());
 		panel.add(passInput());
+		//si pas un root on mais d'autre truque
 		if(!connectedEmploye.estRoot()) {
 			panel.add(arrive());
 			panel.add(dateArrive());
 			panel.add(depart());
 			panel.add(dateDepart());
 		}
+		//les boutons
 		panel.add(save());
 		panel.add(cancel());
 		return panel;
@@ -109,7 +122,7 @@ private JTextField depart;
     
     private JLabel prenom()
     {
-    	JLabel label = new JLabel("PrÈnom :");
+    	JLabel label = new JLabel("Pr√©nom :");
     	label.setFont(new Font("Serif", Font.PLAIN, 20));
     	label.setForeground(Color.decode("#540b0e"));
     	return label;
@@ -134,7 +147,7 @@ private JTextField depart;
     
     private JLabel arrive()
     {
-    	JLabel label = new JLabel("Date d'arrivÈe :");
+    	JLabel label = new JLabel("Date d'arriv√©e :");
     	label.setFont(new Font("Serif", Font.PLAIN, 20));
     	label.setForeground(Color.decode("#540b0e"));
     	return label;
@@ -142,7 +155,7 @@ private JTextField depart;
     
     private JLabel depart()
     {
-    	JLabel label = new JLabel("Date de depart :");
+    	JLabel label = new JLabel("Date de d√©part :");
     	label.setFont(new Font("Serif", Font.PLAIN, 20));
     	label.setForeground(Color.decode("#540b0e"));
     	return label;
@@ -172,7 +185,7 @@ private JTextField depart;
     
     private JTextField passInput()
     {
-    	pass = new JTextField();
+    	pass = new JPasswordField();
     	pass.setText(connectedEmploye.getPassword());
     	return pass;
     }
@@ -190,50 +203,68 @@ private JTextField depart;
     	depart.setText(String.valueOf(connectedEmploye.getDateDepart()));
     	return depart;
     }
+    
+    //bouton de sauvegarde
     private JButton save()
     {
     	JButton btn = new JButton("Enregistrer");
     	btn.setBackground(Color.decode("#540b0e"));
 		btn.setForeground(Color.decode("#fafafa"));
 		btn.setFont(new Font("Serif", Font.PLAIN, 20));
-		btn.addActionListener(new ActionListener() {
+		btn.addActionListener(EnregisterAction());
+    	return btn;
+    }
+    
+    private ActionListener EnregisterAction() {
+    	return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				 connectedEmploye.setNom(nom.getText());
 				 connectedEmploye.setPrenom(prenom.getText());
 				 connectedEmploye.setMail(email.getText());
-				 connectedEmploye.setPassword(pass.getText());
-				 try {
-					gestionPersonnel.updateRoot(gestionPersonnel.getRoot());
-				} catch (SauvegardeImpossible e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				 frame().setVisible(false);
-				 frame().dispose();
-				 HomePage home  = new HomePage(gestionPersonnel, gestionPersonnel.getRoot());
+		   		String p= new String(pass.getPassword());
+				 connectedEmploye.setPassword(p);
+				 //update
+				 if(connectedEmploye.estRoot()) {
+					 try {
+					 	gestionPersonnel.updateRoot(gestionPersonnel.getRoot());
+				 	} catch (SauvegardeImpossible e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}					 
+				 }else {
+					 connectedEmploye.updateEmploye(connectedEmploye);
+				 }
+
+				 root.dispose();
+				 HomePage home  = new HomePage(gestionPersonnel, connectedEmploye);
 				 home.frame().setVisible(true);
 				
 			}
-		});
-    	return btn;
+		};
     }
+    //bonton pour annuler sans modif
     private JButton cancel()
     {
     	JButton btn = new JButton("Annuler");
     	btn.setBackground(Color.decode("#540b0e"));
 		btn.setForeground(Color.decode("#fafafa"));
 		btn.setFont(new Font("Serif", Font.PLAIN, 20));
-		btn.addActionListener(new ActionListener() {
+		btn.addActionListener(annuleAction());
+    	return btn;
+    }
+    
+    private ActionListener annuleAction() {
+    	return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame().setVisible(false);
+				root.dispose();
 				HomePage home = new HomePage(gestionPersonnel, connectedEmploye);
 				home.frame().setVisible(true);
 			}
-		});
-    	return btn;
+		};
     }
+    
 }

@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -22,6 +24,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -44,10 +47,12 @@ public class AddChangeEmploye {
 	private JTextField nom;
 	private JTextField prenom;
 	private JTextField mail;
-	private JTextField pass;
+	private JPasswordField pass;
 	private JTextField dateArrive;
 	private JTextField dateDepart;
 	private Employe connectedEmploye;
+	private JFrame employeAdd = new JFrame();
+
 	
 	
 	public AddChangeEmploye(GestionPersonnel gestionPersonnel, Ligue ligue, Employe connectedEmploye) {
@@ -63,14 +68,18 @@ public class AddChangeEmploye {
 	
 	private JFrame frame()
 	{
-		JFrame employeAdd = new JFrame();
-		employeAdd.getContentPane().setBackground(Color.decode("#cbc0d3"));
-		employeAdd.setTitle("Ajouter un employé");
+		employeAdd.getContentPane().setBackground(Color.decode("#0080ff"));
+		employeAdd.setTitle("Ajouter un employÃ©");
 		employeAdd.setLayout(new GridBagLayout());
 		employeAdd.setSize(700,700);
 		employeAdd.setLocationRelativeTo(null);
 		employeAdd.setJMenuBar(menuBar());
 		employeAdd.add(panelContainer());
+   	 	//icon en haut a gauche
+   	 	Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");  
+   	 	employeAdd.setIconImage(icon); 
+        //permet de faire que la personne ne peux pas modifier la taille de la fenettre
+   	 	employeAdd.setResizable(false);
 		employeAdd.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		return employeAdd;
 	}
@@ -84,7 +93,7 @@ public class AddChangeEmploye {
 		 menu.setSize(70,70);
 		 menu.setForeground(Color.decode("#fafafa"));
 		 menubar.add(menu);
-		 menubar.setBackground(Color.decode("#6f1d1b"));
+		 menubar.setBackground(Color.decode("#9f9f9f"));
 		return menubar;
 	 }
 
@@ -97,15 +106,15 @@ public class AddChangeEmploye {
 		panel.setPreferredSize(new Dimension(500,500));
 		JLabel nomL = new JLabel("Nom :");
 		nomL.setFont(new Font("Serif", Font.PLAIN, 22));
-		JLabel prenomL = new JLabel("Prénom :");
+		JLabel prenomL = new JLabel("PrÃ©nom :");
 		prenomL.setFont(new Font("Serif", Font.PLAIN, 22));
 		JLabel emailL = new JLabel("Email :");
 		emailL.setFont(new Font("Serif", Font.PLAIN, 22));
 		JLabel passwordL = new JLabel("Password :");
 		passwordL.setFont(new Font("Serif", Font.PLAIN, 22));
-		JLabel dateArriveeL = new JLabel("Date d'arrivée :");
+		JLabel dateArriveeL = new JLabel("Date d'arrivÃ©e :");
 		dateArriveeL.setFont(new Font("Serif", Font.PLAIN, 22));
-		JLabel dateDepartL = new JLabel("Date de départ :");
+		JLabel dateDepartL = new JLabel("Date de dÃ©part :");
 		dateDepartL.setFont(new Font("Serif", Font.PLAIN, 22));
 
 		
@@ -117,10 +126,6 @@ public class AddChangeEmploye {
 		panel.add(mailInput());
 		panel.add(passwordL);
 		panel.add(passwordInput());
-		//panel.add(dateArriveeL);
-		//panel.add(DateArriveInput());
-		//panel.add(dateDepartL);
-		//panel.add(DateDepartInput());
 		panel.add(addEmploye());
 		panel.add(cancelAdd());
 		return panel;
@@ -145,22 +150,10 @@ public class AddChangeEmploye {
 		return mail;
 	}
 	
-	private  JTextField passwordInput()
+	private  JPasswordField passwordInput()
 	{
-		pass = new JTextField();
+		pass = new JPasswordField();
 		return pass;
-	}
-	
-	private  JTextField DateArriveInput()
-	{
-		dateArrive = new JTextField();
-		return dateArrive;
-	}
-	
-	private JTextField DateDepartInput()
-	{
-		dateDepart = new JTextField();
-		return dateDepart;
 	}
 	
 	
@@ -168,38 +161,44 @@ public class AddChangeEmploye {
 	private  JButton addEmploye()
 	{
 		JButton addbtn = new JButton("Ajouter");
-		addbtn.setBackground(Color.decode("#feeafa"));
+		addbtn.setBackground(Color.decode("#cbc0d3"));
 		addbtn.setForeground(Color.decode("#540b0e"));
-		addbtn.addActionListener(new ActionListener() {
+		addbtn.addActionListener(addEmployeActions());
+		return addbtn;
+	}
+	private ActionListener addEmployeActions() {
+		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ligue.addEmploye(nom.getText(), prenom.getText(), mail.getText(), pass.getText(), null, null);
-	            frame().setVisible(false);
-	            frame().dispose();
+				String p= new String(pass.getPassword());
+				ligue.addEmploye(nom.getText(), prenom.getText(), mail.getText(),p, LocalDate.now(), null);
+				employeAdd.dispose();
 	            listEmployes employesPage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
 				employesPage.listEmployes();
 			}
-		});
-		return addbtn;
+		};
 	}
 	
 	private JButton cancelAdd()
 	{
 		JButton cancelbtn = new JButton("Annuler");
-		cancelbtn.setBackground(Color.decode("#feeafa"));
+		cancelbtn.setBackground(Color.decode("#cbc0d3"));
 		cancelbtn.setForeground(Color.decode("#540b0e"));
-		cancelbtn.addActionListener(new ActionListener() {
+		cancelbtn.addActionListener(cancelAddAction());
+		return cancelbtn;
+	}
+	
+	private ActionListener cancelAddAction() {
+		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame().setVisible(false);
-				frame().dispose();
+				employeAdd.dispose();
 				listEmployes employesPage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
 				employesPage.listEmployes();
 			}
-		});
-		return cancelbtn;
+		};
 	}
 	
 	private JPanel panelContainer()
