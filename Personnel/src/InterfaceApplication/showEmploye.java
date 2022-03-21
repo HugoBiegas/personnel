@@ -163,9 +163,6 @@ public class showEmploye {
 		return panelLabels;
 	}
 	
-	
-	
-	
 	private JPanel container()
 	{
 		JPanel container = new JPanel();

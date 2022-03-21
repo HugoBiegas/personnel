@@ -1,4 +1,5 @@
 package jdbc;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
@@ -254,8 +255,9 @@ public class JDBC implements Passerelle
 		try
 		{
 			PreparedStatement listEmploye;
-			listEmploye = connection.prepareStatement("DELETE FROM employe WHERE id_employe = ?");
-			listEmploye.setInt(1, employe.getId());
+			listEmploye = connection.prepareStatement("UPDATE employe set dateDepart_employe= ? WHERE id_employe=?");
+			listEmploye.setString(1, "2020-10-10");
+			listEmploye.setInt(2, employe.getId());
 			listEmploye.executeUpdate();
 		}
 		catch (SQLException e) 
