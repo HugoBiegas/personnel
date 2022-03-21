@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
@@ -172,10 +173,14 @@ public class AddChangeEmploye {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String p= new String(pass.getPassword());
-				ligue.addEmploye(nom.getText(), prenom.getText(), mail.getText(),p, LocalDate.now(), null);
-				employeAdd.dispose();
-	            listEmployes employesPage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
-				employesPage.listEmployes();
+				if(!p.equals("") && !nom.getText().equals("") && !prenom.getText().equals("") && mail.getText().contains("@")) {
+					ligue.addEmploye(nom.getText(), prenom.getText(), mail.getText(),p,LocalDate.now(),null);
+					employeAdd.dispose();
+		            listEmployes employesPage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
+					employesPage.listEmployes();
+				}
+				else
+					JOptionPane.showMessageDialog(null, "entrai des donnée valide", "Formulaire", JOptionPane.ERROR_MESSAGE);
 			}
 		};
 	}

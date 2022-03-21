@@ -73,6 +73,8 @@ public class showEmploye {
 		employeData.setSize(700,700);
 		employeData.setLocationRelativeTo(null);
 		employeData.setJMenuBar(menuBar());
+		//titre
+		employeData.setTitle("Compte employé");
    	 	//icon en haut a gauche
    	 	Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");  
    	 	employeData.setIconImage(icon); 
@@ -148,7 +150,10 @@ public class showEmploye {
 		labels.add(new JLabel("Date d'arrivée (Y-m-d) : "));
 		labels.add(new JLabel(String.valueOf(selectedEmploye.getDateArrivee())));
 		labels.add(new JLabel("Date de départ (Y-m-d) : "));
-		labels.add(new JLabel(String.valueOf(selectedEmploye.getDateDepart())));
+		if(selectedEmploye.getDateDepart() == null)
+			labels.add(new JLabel("toujour en activiter"));
+		else
+			labels.add(new JLabel(String.valueOf(selectedEmploye.getDateDepart())));
 		for(JLabel jlabel : labels) 
 		{
 			panelLabels.add(jlabel);

@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -86,7 +87,6 @@ private JFrame root = new JFrame();
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.decode("#9f9f9f"));
 		panel.setBorder(BorderFactory.createLineBorder(Color.decode("#cbc0d3"), 3));
-		//panel.setPreferredSize(new Dimension(350,350));
 		GridLayout layout = new GridLayout(0,2);
 		layout.setVgap(40);
 		layout.setHgap(10);
@@ -220,26 +220,30 @@ private JFrame root = new JFrame();
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				 connectedEmploye.setNom(nom.getText());
-				 connectedEmploye.setPrenom(prenom.getText());
-				 connectedEmploye.setMail(email.getText());
-		   		String p= new String(pass.getPassword());
-				 connectedEmploye.setPassword(p);
-				 //update
-				 if(connectedEmploye.estRoot()) {
-					 try {
-					 	gestionPersonnel.updateRoot(gestionPersonnel.getRoot());
-				 	} catch (SauvegardeImpossible e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}					 
-				 }else {
-					 connectedEmploye.updateEmploye(connectedEmploye);
+				String p= new String(pass.getPassword());
+				 if(email.getText().contains("@") && !p.equals("") && !nom.getText().equals("") && !prenom.getText().equals("")) {
+					 	connectedEmploye.setMail(email.getText());
+					 	connectedEmploye.setNom(nom.getText());
+					 	connectedEmploye.setPrenom(prenom.getText());
+					 	connectedEmploye.setPassword(p);
+						 //update
+						 if(connectedEmploye.estRoot()) {
+							 try {
+							 	gestionPersonnel.updateRoot(gestionPersonnel.getRoot());
+						 	} catch (SauvegardeImpossible e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}					 
+						 }else {
+							 connectedEmploye.updateEmploye(connectedEmploye);
+						 }
+						 root.dispose();
+						 HomePage home  = new HomePage(gestionPersonnel, connectedEmploye);
+						 home.frame().setVisible(true);
 				 }
-
-				 root.dispose();
-				 HomePage home  = new HomePage(gestionPersonnel, connectedEmploye);
-				 home.frame().setVisible(true);
+				 else 
+					JOptionPane.showMessageDialog(null, "entrai des donnée valide", "Formulaire", JOptionPane.ERROR_MESSAGE);
+				 
 				
 			}
 		};

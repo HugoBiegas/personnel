@@ -64,7 +64,12 @@ public class Serialization implements personnel.Passerelle
 		
 		
 	}
-
+	@Override
+	public boolean isExistLigue(String ligue) throws SauvegardeImpossible{
+		return true;
+	}
+	
+	
 	@Override
 	public void deleteEmploye(Employe employe) throws SauvegardeImpossible {
 		

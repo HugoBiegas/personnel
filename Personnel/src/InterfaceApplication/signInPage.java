@@ -34,8 +34,6 @@ import personnel.SauvegardeImpossible;
 public class signInPage{
 	
     static GestionPersonnel gestionPersonnel;
-    private  static HomePage homepage;
-    listEmployes listemp;
     Ligue ligue;
     Employe employe;
     private JPasswordField passwordTxt;
@@ -47,7 +45,6 @@ public class signInPage{
     public signInPage(GestionPersonnel gestionPersonnel)
 	{
 		this.gestionPersonnel = gestionPersonnel;
-		this.listemp =  new listEmployes(gestionPersonnel, ligue, connectedEmploye);
 	}
 	
     public void signIn()
@@ -208,6 +205,7 @@ public class signInPage{
     public static void main(String[] args) throws SauvegardeImpossible
     {
     	signInPage signInPage = new signInPage(GestionPersonnel.getGestionPersonnel());
+    	signInPage.gestionPersonnel.getRootBaseDeDonnees();
     	//rend visible la page de connections
     	signInPage.signIn();
     		      	 

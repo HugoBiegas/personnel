@@ -47,7 +47,6 @@ public class listEmployes {
 	
 	private  GestionPersonnel gestionPersonnel;
 	private  Ligue ligue;
-	private  HomePage homePage;
 	private Employe connectedEmploye;
 	private JFrame employes = new JFrame();
 	
@@ -70,6 +69,8 @@ public class listEmployes {
 		employes.setJMenuBar(menuBar());
 		employes.setLayout(new GridBagLayout());
 		employes.add(container());
+		//titre
+		employes.setTitle("Liste employée");
    	 	//icon en haut a gauche
    	 	Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");  
    	 	employes.setIconImage(icon); 
@@ -263,10 +264,18 @@ public class listEmployes {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String inputValue = JOptionPane.showInputDialog("Nom de la ligue"); 
-				ligue.setNom(inputValue);
-				HomePage pageLigues = new HomePage(gestionPersonnel, connectedEmploye);
 				employes.dispose();
+				boolean cpt=false;
+				while(cpt== false) {
+					String inputValue = JOptionPane.showInputDialog("Nom de la ligue"); 
+				if(inputValue == null)
+					cpt =true;
+				else if(inputValue != null && !inputValue.equals("")) {
+						cpt = true;
+						ligue.setNom(inputValue);
+					}
+				}
+				HomePage pageLigues = new HomePage(gestionPersonnel, connectedEmploye);
 				pageLigues.frame().setVisible(true);
 			}
 		};
@@ -296,7 +305,7 @@ public class listEmployes {
 				} catch (SauvegardeImpossible e1) {
 					e1.printStackTrace();
 				}
-				JOptionPane.showMessageDialog(null, "la ligue a �t� supprim�e", "supprimer la ligue", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "la ligue a été supprimée", "supprimer la ligue", JOptionPane.INFORMATION_MESSAGE);
 				HomePage pageLigues = new HomePage(gestionPersonnel, connectedEmploye);
 				frame().dispose();
 				pageLigues.frame().setVisible(true);

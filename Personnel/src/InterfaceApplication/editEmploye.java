@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -28,6 +29,7 @@ import commandLine.DateInvalideException;
 import personnel.Employe;
 import personnel.GestionPersonnel;
 import personnel.Ligue;
+import personnel.SauvegardeImpossible;
 
 
 
@@ -67,6 +69,8 @@ public class editEmploye {
 		employes.setJMenuBar(menuBar());
 		employes.setLayout(new GridBagLayout());
 		employes.add(panel());
+		//titre
+		employes.setTitle("édite employé");
    	 	//icon en haut a gauche
    	 	Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");  
    	 	employes.setIconImage(icon); 
@@ -125,8 +129,6 @@ public class editEmploye {
 		panel.add(passwordInput());
 		panel.add(dateArriveeL());
 		panel.add(DateArriveInput());
-		panel.add(dateDepartL());
-		panel.add(DateDepartInput());
 		panel.add(addEmploye());
 		panel.add(cancelAdd());
 		return panel;
@@ -185,41 +187,43 @@ public class editEmploye {
 		JButton addbtn = new JButton("Enregistrer");
 		addbtn.setBackground(Color.decode("#feeafa"));
 		addbtn.setForeground(Color.decode("#540b0e"));
-		addbtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			  employe.setNom(nom.getText());
-			  employe.setPrenom(prenom.getText());
-			  employe.setMail(mail.getText());
-			  employe.setPassword(password.getText());
-			  try {
-				employe.setDateArrivee(LocalDate.parse(dateArrive.getText()));
-			} catch (DateInvalideException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			  try {
-				employe.setDateDepart(dateDepart.getText().isEmpty() ? null : LocalDate.parse(dateDepart.getText()));
-			 } catch (DateInvalideException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			  frame().setVisible(false);
-			  frame().dispose();
-			  listEmployes employespage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
-			  employespage.listEmployes();
-			}
-		});
+		addbtn.addActionListener(addEmployeAction());
 		return addbtn;
 	}
 	
+	private ActionListener addEmployeAction() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String p= new String(password.getPassword());
+				 if(mail.getText().contains("@") && !p.equals("") && !nom.getText().equals("") && !prenom.getText().equals("")) {
+					 	 employe.setMail(mail.getText());
+					 	 employe.setNom(nom.getText());
+					 	 employe.setPrenom(prenom.getText());
+					 	 employe.setPassword(p);
+					 	 employe.updateEmploye(connectedEmploye);
+						 employes.dispose();
+						 listEmployes employespage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
+						 employespage.listEmployes();	
+				 }
+				 else 
+					JOptionPane.showMessageDialog(null, "entrai des donnée valide", "Formulaire", JOptionPane.ERROR_MESSAGE);
+			}
+		};
+	}
+
 	private JButton cancelAdd()
 	{
 		JButton cancelbtn = new JButton("Annuler");
 		cancelbtn.setBackground(Color.decode("#feeafa"));
 		cancelbtn.setForeground(Color.decode("#540b0e"));
-		cancelbtn.addActionListener(new ActionListener() {
+		cancelbtn.addActionListener(cancelAddActon());
+		return cancelbtn;
+	}
+	
+	private ActionListener cancelAddActon() {
+		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -228,8 +232,7 @@ public class editEmploye {
 				  listEmployes employespage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
 				  employespage.listEmployes();
 			}
-		});
-		return cancelbtn;
+		};
 	}
 	
 	private JTextField nameInput()

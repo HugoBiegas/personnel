@@ -51,7 +51,7 @@ public class JDBC implements Passerelle
 				
 				gestionPersonnel.addLigue(ligues.getInt("num_ligue"), ligues.getString("nom_ligue"));
 				//requet préparer
-		        PreparedStatement response = connection.prepareStatement("SELECT * FROM employe WHERE num_ligue = ?");
+		        PreparedStatement response = connection.prepareStatement("SELECT * FROM employe WHERE num_ligue_Actu = ?");
 		        response.setInt(1, ligues.getInt("num_ligue"));
 		        ResultSet employe = response.executeQuery();
 		        Ligue ligue = gestionPersonnel.getLigues().last();
@@ -62,7 +62,7 @@ public class JDBC implements Passerelle
 			    String  prenom = employe.getString("prenom_employe");
 				String	mail = employe.getString("mail_employe");
 	            String	password = employe.getString("password_employe");
-//si employe.getString("dateArrivee_employe") et différent de null on lui mais la valeur en local date sinon on lui attribu null
+	            //si employe.getString("dateArrivee_employe") et différent de null on lui mais la valeur en local date sinon on lui attribu null
 	            LocalDate dateArrivee;
 	            LocalDate dateDepart;
 		        if(employe.getString("dateArrivee_employe") != null) {
@@ -81,7 +81,7 @@ public class JDBC implements Passerelle
 		        	dateDepart =null;
 		        }			    
 		        Employe employes = ligue.addEmploye(nom, prenom, mail, password, dateArrivee, dateDepart, id);
-			    
+			    //si il est admin d'une ligue
 			    if(employe.getBoolean("admin")) {
 			    	ligue.setAdministrateur(employes);
 			    }
@@ -122,6 +122,7 @@ public class JDBC implements Passerelle
 			instruction = connection.prepareStatement("insert into ligue (nom_ligue) values(?)", Statement.RETURN_GENERATED_KEYS);
 			instruction.setString(1, ligue.getNom());		
 			instruction.executeUpdate();
+			//récupérer l'id de l'employer enregistrer
 			ResultSet id = instruction.getGeneratedKeys();
 			id.next();
 			return id.getInt(1);
@@ -181,7 +182,6 @@ public class JDBC implements Passerelle
 			listLigue = connection.prepareStatement("DELETE FROM ligue WHERE num_ligue = ?");
 			listLigue.setInt(1, ligue.getId());
 			listLigue.executeUpdate();
-			System.out.println("Ligue " + ligue.getNom() + " supprim�");
 		}
 		catch (SQLException e) 
 		{
@@ -198,7 +198,7 @@ public class JDBC implements Passerelle
 		try {
 			
 			PreparedStatement instruction2;
-			instruction2 = connection.prepareStatement("insert into employe (nom_employe, prenom_employe, mail_employe, password_employe, dateArrivee_employe, num_ligue) values(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			instruction2 = connection.prepareStatement("insert into employe (nom_employe, prenom_employe, mail_employe, password_employe, dateArrivee_employe, num_ligue_Actu) values(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			instruction2.setString(1, employe.getNom());		
 			instruction2.setString(2, employe.getPrenom());	
 			instruction2.setString(3, employe.getMail());
@@ -206,6 +206,7 @@ public class JDBC implements Passerelle
 			instruction2.setString(5, employe.getDateArrivee() == null ? null :  String.valueOf(employe.getDateArrivee()));
 			instruction2.setInt(6, employe.getLigue().getId());
 			instruction2.executeUpdate();
+			//récupérer l'id de l'employer enregistrer
 			ResultSet id = instruction2.getGeneratedKeys();
 			id.next();
 			return id.getInt(1);
@@ -225,7 +226,7 @@ public class JDBC implements Passerelle
 		{
 			PreparedStatement instruction;
 	        instruction = connection.prepareStatement("UPDATE employe SET " + dataList + "= ? WHERE id_employe = ?");
-	
+	        //on créer une map avec tout les données de l'employer actuelle
 			Map <String, String> map = new HashMap<>();
 					map.put("nom_employe", employe.getNom());
 					map.put("prenom_employe", employe.getPrenom());
@@ -233,9 +234,12 @@ public class JDBC implements Passerelle
 					map.put("password_employe", employe.getPassword());
 					map.put("dateArrivee_employe", String.valueOf(employe.getDateArrivee()).isEmpty() ? null : String.valueOf(employe.getDateArrivee()));
 					map.put("dateDepart_employe", String.valueOf(employe.getDateDepart()).isEmpty() ? null : String.valueOf(employe.getDateDepart()));
+		//on prent la partie ou le nom du champ et égale aux nom que l'on veux modifier
 		instruction.setString(1, map.get(dataList));
+		//on récupére l'id pour l'envoiler
 	    instruction.setInt(2, employe.getId());
-			instruction.executeUpdate();
+	    //on lance l'ubdate
+		instruction.executeUpdate();
 		}
 		catch (SQLException e) 
 		{
@@ -243,10 +247,6 @@ public class JDBC implements Passerelle
 			throw new SauvegardeImpossible(e);
 	}
 	}
-	
-	
-	
-	
 
 	@Override
 	public void deleteEmploye(Employe employe) throws SauvegardeImpossible 
@@ -257,7 +257,6 @@ public class JDBC implements Passerelle
 			listEmploye = connection.prepareStatement("DELETE FROM employe WHERE id_employe = ?");
 			listEmploye.setInt(1, employe.getId());
 			listEmploye.executeUpdate();
-			System.out.println("Employe " + employe.getNom() + " supprim�");
 		}
 		catch (SQLException e) 
 		{
@@ -273,7 +272,7 @@ public class JDBC implements Passerelle
 		try 
 		{
 			PreparedStatement listEmploye;
-			listEmploye = connection.prepareStatement("UPDATE employe SET admin = ? WHERE num_ligue = ? AND id_employe = ?");
+			listEmploye = connection.prepareStatement("UPDATE employe SET admin = ? WHERE num_ligue_Actu = ? AND id_employe = ?");
 			listEmploye.setInt(1, 1);
 			listEmploye.setInt(2, employe.getLigue().getId());
 			listEmploye.setInt(3, employe.getId());
@@ -347,7 +346,7 @@ public class JDBC implements Passerelle
 		try 
 		{
 			PreparedStatement tableEmploye;
-			tableEmploye = connection.prepareStatement("UPDATE employe SET admin = (CASE WHEN id_employe = ? THEN 1 WHEN id_employe <> ? THEN 0 END) WHERE num_ligue = ?");
+			tableEmploye = connection.prepareStatement("UPDATE employe SET admin = (CASE WHEN id_employe = ? THEN 1 WHEN id_employe <> ? THEN 0 END) WHERE num_ligue_Actu = ?");
 			tableEmploye.setInt(1, employe.getId());
 			tableEmploye.setInt(2, employe.getId());
 			tableEmploye.setInt(3, employe.getLigue().getId());
@@ -415,5 +414,18 @@ public class JDBC implements Passerelle
 			e.printStackTrace();
 			throw new SauvegardeImpossible(e);
 		}
-	}	
+	}
+	public boolean isExistLigue(String ligue) throws SauvegardeImpossible{
+		try {
+			PreparedStatement requete = connection.prepareStatement("SELECT * FROM ligue where nom_ligue = ?");
+			requete.setString(1, ligue);
+			ResultSet response = requete.executeQuery();
+			if(response.next()) 
+				return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

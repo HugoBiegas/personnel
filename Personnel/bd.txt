@@ -5,7 +5,7 @@ USE personnel;
 CREATE TABLE LIGUE(
     num_ligue INT PRIMARY KEY AUTO_INCREMENT,
     nom_ligue VARCHAR(32)
-);
+)ENGINE = INNODB;
 
 CREATE TABLE EMPLOYE(
     id_employe INT PRIMARY KEY  AUTO_INCREMENT,
@@ -17,7 +17,11 @@ CREATE TABLE EMPLOYE(
     dateDepart_employe DATETIME,
     admin INT DEFAULT 0,
     superAdmin INT DEFAULT 0,
-    num_ligue INT NULL,
-    FOREIGN KEY (num_ligue) REFERENCES LIGUE(num_ligue) ON DELETE CASCADE
-);
+    num_ligue_Actu INT NULL
+)ENGINE = INNODB;
+
+
+
+ALTER Table EMPLOYE
+	ADD CONSTRAINT Fk_L_E FOREIGN KEY (num_ligue_Actu) REFERENCES LIGUE(num_ligue) ON DELETE CASCADE;
 

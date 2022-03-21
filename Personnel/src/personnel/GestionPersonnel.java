@@ -1,6 +1,9 @@
 package personnel;
 
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.SortedSet;
@@ -23,7 +26,7 @@ public class GestionPersonnel implements Serializable
 	private static GestionPersonnel gestionPersonnel = null;
 	private SortedSet<Ligue> ligues;
     private SortedSet<Employe> employes;
-	private Employe root = new Employe(this, null, "root", "", "hugo.biegas@gmail.com", "toor", null, null);
+	private Employe root = new Employe(this, null, "root", "admin", "admin@gmail.com", "toor", null, null);
 	public final static int SERIALIZATION = 1, JDBC = 2, 
 			TYPE_PASSERELLE = JDBC;  
 	private static Passerelle passerelle = TYPE_PASSERELLE == JDBC ? new jdbc.JDBC() : new serialisation.Serialization();	
@@ -126,9 +129,9 @@ public class GestionPersonnel implements Serializable
 	
 	int insert(Ligue ligue) throws SauvegardeImpossible
 	{
-		return passerelle.insert(ligue);
+		 return passerelle.insert(ligue);
 	}
-	
+	//savoir si il as les droits
 	public boolean haveWritePermission(Ligue ligue, Employe employe) {
 		if(employe.estRoot()) {
 			return true;
@@ -229,4 +232,14 @@ public class GestionPersonnel implements Serializable
 			e.printStackTrace();
 		}
 	}
+	public boolean isExistLigue(String ligue) {
+		try {
+			return passerelle.isExistLigue(ligue);
+		} catch (SauvegardeImpossible e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }

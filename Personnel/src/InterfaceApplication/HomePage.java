@@ -137,9 +137,18 @@ public class HomePage {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					home.dispose();
-					String inputValue = JOptionPane.showInputDialog("Nom de la ligue"); 
-					try {
-						gestionPersonnel.addLigue(inputValue);
+					try {						
+					boolean cpt=false;
+					//boucle pour avoir des ligue coérente
+					while(cpt==false) {
+						String inputValue = JOptionPane.showInputDialog("Nom de la ligue"); 
+						if(inputValue == null) 
+							cpt=true;
+						else if(!inputValue.equals("") && inputValue != null && gestionPersonnel.isExistLigue(inputValue.toString()) == false) {
+							cpt = true;
+							gestionPersonnel.addLigue(inputValue);
+						}
+					}
 					} catch (SauvegardeImpossible e1) {
 						e1.printStackTrace();
 					}
