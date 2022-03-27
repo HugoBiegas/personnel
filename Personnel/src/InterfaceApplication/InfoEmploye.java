@@ -44,7 +44,7 @@ import personnel.Ligue;
 import personnel.SauvegardeImpossible;
 
 
-public class showEmploye {
+public class InfoEmploye {
 	
 	private  GestionPersonnel gestionPersonnel;
 	private  Employe selectedEmploye;
@@ -53,7 +53,7 @@ public class showEmploye {
 	private  JFrame employeData = new JFrame();
 
 	
-	public showEmploye(GestionPersonnel gestionPersonnel, Employe selectedEmploye, Ligue ligue, Employe connectedEmploye) {
+	public InfoEmploye(GestionPersonnel gestionPersonnel, Employe selectedEmploye, Ligue ligue, Employe connectedEmploye) {
 		   this.gestionPersonnel = gestionPersonnel;
 		   this.selectedEmploye = selectedEmploye;
 		   this.ligue = ligue;
@@ -220,7 +220,7 @@ public class showEmploye {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 					 frame().setVisible(false);
-					 listEmployes list = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
+					 listEmployesLigue list = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
 					 list.frame().setVisible(true);
 			}
 		};
@@ -275,7 +275,7 @@ public class showEmploye {
 					}
 					JOptionPane.showMessageDialog(null, "L'employé a été supprimé", "supprimer l'employé", JOptionPane.INFORMATION_MESSAGE);
 					employeData.dispose();
-					listEmployes employesPage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
+					listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
 					employesPage.listEmployes();
 				}
 		};
@@ -312,7 +312,7 @@ public class showEmploye {
 					ligue.setAdmin(selectedEmploye);
 					JOptionPane.showMessageDialog(null, "L'émployé est maintenant l'admin de la ligue" + ligue.getNom() + ".", "Nommer admin", JOptionPane.INFORMATION_MESSAGE);
 					employeData.dispose();
-					listEmployes employesPage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
+					listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
 					employesPage.listEmployes();
 				}
 				else if(selectedEmploye.estAdmin(ligue)) {
@@ -322,7 +322,7 @@ public class showEmploye {
 						e.printStackTrace();
 					} 
 					employeData.dispose();
-					listEmployes employesPage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
+					listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
 					employesPage.listEmployes();
 				}
 			}

@@ -43,14 +43,14 @@ import personnel.SauvegardeImpossible;
 
 
 
-public class listEmployes {
+public class listEmployesLigue {
 	
 	private  GestionPersonnel gestionPersonnel;
 	private  Ligue ligue;
 	private Employe connectedEmploye;
 	private JFrame employes = new JFrame();
 	
-	 public listEmployes(GestionPersonnel gestionPersonnel, Ligue ligue, Employe connectedEmploye) {
+	 public listEmployesLigue(GestionPersonnel gestionPersonnel, Ligue ligue, Employe connectedEmploye) {
 		    this.gestionPersonnel = gestionPersonnel;
 		    this.ligue = ligue;
 		    this.connectedEmploye = connectedEmploye;
@@ -204,7 +204,7 @@ public class listEmployes {
 		            JList source = (JList)e.getSource();
 		            Employe selectedEmploye = (Employe) source.getSelectedValue();
 		            frame().setVisible(false);
-		            showEmploye employe = new showEmploye(gestionPersonnel, selectedEmploye, ligue, connectedEmploye);
+		            InfoEmploye employe = new InfoEmploye(gestionPersonnel, selectedEmploye, ligue, connectedEmploye);
 		            employe.employeShow();
 		        }
 			}
@@ -275,7 +275,7 @@ public class listEmployes {
 						ligue.setNom(inputValue);
 					}
 				}
-				HomePage pageLigues = new HomePage(gestionPersonnel, connectedEmploye);
+				PageAcceuil pageLigues = new PageAcceuil(gestionPersonnel, connectedEmploye);
 				pageLigues.frame().setVisible(true);
 			}
 		};
@@ -306,7 +306,7 @@ public class listEmployes {
 					e1.printStackTrace();
 				}
 				JOptionPane.showMessageDialog(null, "la ligue a été supprimée", "supprimer la ligue", JOptionPane.INFORMATION_MESSAGE);
-				HomePage pageLigues = new HomePage(gestionPersonnel, connectedEmploye);
+				PageAcceuil pageLigues = new PageAcceuil(gestionPersonnel, connectedEmploye);
 				frame().dispose();
 				pageLigues.frame().setVisible(true);
 			}
@@ -328,7 +328,7 @@ public class listEmployes {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				HomePage pageLigues = new HomePage(gestionPersonnel, connectedEmploye);
+				PageAcceuil pageLigues = new PageAcceuil(gestionPersonnel, connectedEmploye);
 				employes.dispose();
 				pageLigues.frame().setVisible(true);
 			}

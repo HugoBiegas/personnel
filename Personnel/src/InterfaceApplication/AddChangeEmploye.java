@@ -44,7 +44,7 @@ public class AddChangeEmploye {
 	
 	private static Ligue ligue;
 	private static GestionPersonnel gestionPersonnel;
-	private static HomePage ligues;
+	private static PageAcceuil ligues;
 	private JTextField nom;
 	private JTextField prenom;
 	private JTextField mail;
@@ -176,7 +176,7 @@ public class AddChangeEmploye {
 				if(!p.equals("") && !nom.getText().equals("") && !prenom.getText().equals("") && mail.getText().contains("@")) {
 					ligue.addEmploye(nom.getText(), prenom.getText(), mail.getText(),p,LocalDate.now(),null);
 					employeAdd.dispose();
-		            listEmployes employesPage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
+		            listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
 					employesPage.listEmployes();
 				}
 				else
@@ -200,7 +200,7 @@ public class AddChangeEmploye {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				employeAdd.dispose();
-				listEmployes employesPage = new listEmployes(gestionPersonnel, ligue, connectedEmploye);
+				listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
 				employesPage.listEmployes();
 			}
 		};

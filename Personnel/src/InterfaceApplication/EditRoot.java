@@ -238,7 +238,7 @@ private JFrame root = new JFrame();
 							 connectedEmploye.updateEmploye(connectedEmploye);
 						 }
 						 root.dispose();
-						 HomePage home  = new HomePage(gestionPersonnel, connectedEmploye);
+						 PageAcceuil home  = new PageAcceuil(gestionPersonnel, connectedEmploye);
 						 home.frame().setVisible(true);
 				 }
 				 else 
@@ -265,7 +265,7 @@ private JFrame root = new JFrame();
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				root.dispose();
-				HomePage home = new HomePage(gestionPersonnel, connectedEmploye);
+				PageAcceuil home = new PageAcceuil(gestionPersonnel, connectedEmploye);
 				home.frame().setVisible(true);
 			}
 		};

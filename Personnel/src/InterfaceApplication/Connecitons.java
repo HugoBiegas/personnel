@@ -31,7 +31,7 @@ import personnel.Ligue;
 import personnel.SauvegardeImpossible;
 
 
-public class signInPage{
+public class Connecitons{
 	
     static GestionPersonnel gestionPersonnel;
     Ligue ligue;
@@ -42,7 +42,7 @@ public class signInPage{
     Employe connectedEmploye;
     private JLabel passIncorrect;
     
-    public signInPage(GestionPersonnel gestionPersonnel)
+    public Connecitons(GestionPersonnel gestionPersonnel)
 	{
 		this.gestionPersonnel = gestionPersonnel;
 	}
@@ -173,7 +173,7 @@ public class signInPage{
    			//teste le champs password et mail de root
    			if(p.equals(gestionPersonnel.getRoot().getPassword()) && login.getText().equals(gestionPersonnel.getRoot().getMail())){
 	    	    	//envoi des imformations nésésére a la page d'acueil
-   				   HomePage home = new HomePage(gestionPersonnel, gestionPersonnel.getRoot());
+   				   PageAcceuil home = new PageAcceuil(gestionPersonnel, gestionPersonnel.getRoot());
    				   //rendre visible la page
    				   home.frame().setVisible(true);
       				//permet de fermet la fenettre actuelle
@@ -186,7 +186,7 @@ public class signInPage{
       		    	 for(Employe employe : ligue.getEmployes()) {
       		    	    if(p.equals(employe.getPassword()) && login.getText().equals(employe.getMail())) { 
       		    	    	//envoi des imformations nésésére a la page d'acueil
-      		    			HomePage home = new HomePage(gestionPersonnel, employe);
+      		    			PageAcceuil home = new PageAcceuil(gestionPersonnel, employe);
       		    			//rendre visible la page
         				    home.frame().setVisible(true);
         				    //fermeture de la fenettre de connections
@@ -204,7 +204,7 @@ public class signInPage{
     
     public static void main(String[] args) throws SauvegardeImpossible
     {
-    	signInPage signInPage = new signInPage(GestionPersonnel.getGestionPersonnel());
+    	Connecitons signInPage = new Connecitons(GestionPersonnel.getGestionPersonnel());
     	signInPage.gestionPersonnel.getRootBaseDeDonnees();
     	//rend visible la page de connections
     	signInPage.signIn();

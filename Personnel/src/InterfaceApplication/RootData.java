@@ -200,7 +200,7 @@ public class RootData {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame().setVisible(false);
-				HomePage home = new HomePage(gestionPersonnel, connectedEmploye);
+				PageAcceuil home = new PageAcceuil(gestionPersonnel, connectedEmploye);
 				home.frame().setVisible(true);
 				
 			}

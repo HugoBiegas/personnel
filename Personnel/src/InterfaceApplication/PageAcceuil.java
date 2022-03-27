@@ -48,7 +48,7 @@ import javax.swing.UIManager;
  * @author 33782
  *
  */
-public class HomePage {
+public class PageAcceuil {
 	
 	private Ligue ligue;
 	private GestionPersonnel gestionPersonnel;
@@ -60,7 +60,7 @@ public class HomePage {
     
     
     
-	 public HomePage(GestionPersonnel gestionPersonnel, Employe connectedEmploye) {
+	 public PageAcceuil(GestionPersonnel gestionPersonnel, Employe connectedEmploye) {
 		    this.gestionPersonnel = gestionPersonnel;
 		    this.connectedEmploye = connectedEmploye;
 	 }
@@ -152,7 +152,7 @@ public class HomePage {
 					} catch (SauvegardeImpossible e1) {
 						e1.printStackTrace();
 					}
-					HomePage home = new HomePage(gestionPersonnel, connectedEmploye);
+					PageAcceuil home = new PageAcceuil(gestionPersonnel, connectedEmploye);
 					home.frame().setVisible(true);
 				}
 			};
@@ -256,7 +256,7 @@ public class HomePage {
 			            //récupérations du nom de la ou on a cliquer 
 			            Ligue selected = (Ligue) source.getSelectedValue();
 			            //créations de la prochaine fenettre
-			            listEmployes ligue = new listEmployes(gestionPersonnel,selected, connectedEmploye);
+			            listEmployesLigue ligue = new listEmployesLigue(gestionPersonnel,selected, connectedEmploye);
 			            //
 			            ligue.listEmployes();
 			            home.dispose();
