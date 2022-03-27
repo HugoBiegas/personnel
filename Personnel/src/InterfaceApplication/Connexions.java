@@ -31,7 +31,7 @@ import personnel.Ligue;
 import personnel.SauvegardeImpossible;
 
 
-public class Connecitons{
+public class Connexions{
 	
     static GestionPersonnel gestionPersonnel;
     Ligue ligue;
@@ -42,7 +42,7 @@ public class Connecitons{
     Employe connectedEmploye;
     private JLabel passIncorrect;
     
-    public Connecitons(GestionPersonnel gestionPersonnel)
+    public Connexions(GestionPersonnel gestionPersonnel)
 	{
 		this.gestionPersonnel = gestionPersonnel;
 	}
@@ -204,7 +204,7 @@ public class Connecitons{
     
     public static void main(String[] args) throws SauvegardeImpossible
     {
-    	Connecitons signInPage = new Connecitons(GestionPersonnel.getGestionPersonnel());
+    	Connexions signInPage = new Connexions(GestionPersonnel.getGestionPersonnel());
     	signInPage.gestionPersonnel.getRootBaseDeDonnees();
     	//rend visible la page de connections
     	signInPage.signIn();
