@@ -111,7 +111,7 @@ public class GestionPersonnel implements Serializable
 	}
 	
 	
-	public Employe addEmploye(Ligue id, String nom, String prenom, String mail, String password, LocalDate dateArrivee, LocalDate dateDepart) throws SauvegardeImpossible {
+	public Employe addEmploye(Ligue id, String nom, String prenom, String mail, String password, LocalDate dateDepart, LocalDate  dateArrivee) throws SauvegardeImpossible {
 		   Employe employe = new Employe(this, id, nom, prenom, mail, password, dateDepart, LocalDate.now());
 		    employes.add(employe);
 			passerelle.insert(employe);

@@ -73,7 +73,7 @@ public class JDBC implements Passerelle
 		        }else {
 		        	dateArrivee =null;
 		        }
-		        //si employe.getString("dateArrivee_employe") et différent de null on lui mais la valeur en local date sinon on lui attribu null		        
+		        //si employe.getString("dateDepart_employe") et différent de null on lui mais la valeur en local date sinon on lui attribu null		        
 		        if(employe.getString("dateDepart_employe") != null) {
 		        	String date = employe.getString("dateDepart_employe");
 		        	date= date.substring(0, 10);
@@ -81,7 +81,7 @@ public class JDBC implements Passerelle
 		        }else {
 		        	dateDepart =null;
 		        }			    
-		        Employe employes = ligue.addEmploye(nom, prenom, mail, password, dateArrivee, dateDepart, id);
+		        Employe employes = ligue.addEmploye(nom, prenom, mail, password, dateDepart,dateArrivee, id);
 			    //si il est admin d'une ligue
 			    if(employe.getBoolean("admin")) {
 			    	ligue.setAdministrateur(employes);
