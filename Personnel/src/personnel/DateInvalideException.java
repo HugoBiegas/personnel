@@ -1,4 +1,4 @@
-package commandLine;
+package personnel;
 
 public class DateInvalideException extends Exception {
 	/**
