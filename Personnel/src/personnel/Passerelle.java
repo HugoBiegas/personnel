@@ -18,5 +18,9 @@ public interface Passerelle
 	public void setRoot(Employe employe);
 	void removeAdmin(Ligue ligue) throws SauvegardeImpossible;
 	public boolean isExistLigue(String ligue) throws SauvegardeImpossible;
+	public boolean isExistEmployeNomLigue(int ligue,String nom) throws SauvegardeImpossible;
+	public boolean isExistEmployePrenomLigue(int ligue,String prenom) throws SauvegardeImpossible;
+
+
 }
 

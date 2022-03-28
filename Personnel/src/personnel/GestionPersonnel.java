@@ -241,5 +241,24 @@ public class GestionPersonnel implements Serializable
 		}
 		return false;
 	}
+	public boolean isExistEmployeNomLigue(int ligue,String nom) {
+		try {
+			return passerelle.isExistEmployeNomLigue(ligue,nom);
+		} catch (SauvegardeImpossible e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean isExistEmployePrenomLigue(int ligue,String prenom) {
+		try {
+			return passerelle.isExistEmployeNomLigue(ligue,prenom);
+		} catch (SauvegardeImpossible e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 }

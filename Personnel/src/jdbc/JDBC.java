@@ -437,4 +437,33 @@ public class JDBC implements Passerelle
 		}
 		return false;
 	}
+	public boolean isExistEmployeNomLigue(int ligue ,String nom)throws SauvegardeImpossible {
+		try {
+			PreparedStatement requete2 = connection.prepareStatement("SELECT * FROM employe where num_ligue_Actu = ? AND nom_employe =?");
+			requete2.setInt(1, ligue);
+			requete2.setString(2, nom);
+			ResultSet response2 = requete2.executeQuery();
+			if(response2.next()) 
+				return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean isExistEmployePrenomLigue(int ligue ,String Prenom)throws SauvegardeImpossible {
+		try {
+			PreparedStatement requete2 = connection.prepareStatement("SELECT * FROM employe where num_ligue_Actu = ? AND prenom_employe =?");
+			requete2.setInt(1,ligue);
+			requete2.setString(2, Prenom);
+			ResultSet response2 = requete2.executeQuery();
+			if(response2.next()) 
+				return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

@@ -28,6 +28,14 @@ public class Serialization implements personnel.Passerelle
 			return null;
 		}
 	}
+	@Override
+	public boolean isExistEmployeNomLigue(int ligue,String nom) {
+		return false;
+	}
+	@Override
+	public boolean isExistEmployePrenomLigue(int ligue,String nom) {
+		return false;
+	}
 	
 	/**
 	 * Sauvegarde le gestionnaire pour qu'il soit ouvert automatiquement 

@@ -15,11 +15,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.chrono.JapaneseDate;
+import java.util.SortedSet;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -196,7 +199,7 @@ public class AddChangeEmploye {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String p= new String(pass.getPassword());
-				if(!p.equals("") && !nom.getText().equals("") && !prenom.getText().equals("") && mail.getText().contains("@")) {
+				if(!p.equals("") && !nom.getText().equals("") && !prenom.getText().equals("") && mail.getText().contains("@") && gestionPersonnel.isExistEmployeNomLigue(ligue.getId(),nom.getText())==false && gestionPersonnel.isExistEmployePrenomLigue(ligue.getId(),prenom.getText())==false) {
 					ligue.addEmploye(nom.getText(), prenom.getText(), mail.getText(),p,LocalDate.now(),null);
 					employeAdd.dispose();
 		            listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);

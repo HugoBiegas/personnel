@@ -308,11 +308,11 @@ public class listEmployesLigue {
 			public void actionPerformed(ActionEvent e) {
 				employes.dispose();
 				boolean cpt=false;
-				while(cpt== false) {
+				while(cpt==false) {
 					String inputValue = JOptionPane.showInputDialog("Nom de la ligue"); 
-				if(inputValue == null)
-					cpt =true;
-				else if(inputValue != null && !inputValue.equals("")) {
+					if(inputValue == null) 
+						cpt=true;
+					else if(!inputValue.equals("") && inputValue != null && gestionPersonnel.isExistLigue(inputValue.toString()) == false) {
 						cpt = true;
 						ligue.setNom(inputValue);
 					}
