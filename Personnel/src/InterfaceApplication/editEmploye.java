@@ -86,12 +86,35 @@ public class editEmploye {
 		 menubar.setPreferredSize(new Dimension(60,60));
 		 JMenu menu = new JMenu("Mon compte");
 		 menu.add(menuItem());
+		 menu.add(deco());
 		 menu.setFont(new Font("Serif", Font.BOLD, 20));
 		 menu.setSize(70,70);
 		 menu.setForeground(Color.decode("#fafafa"));
 		 menubar.add(menu);
 		 menubar.setBackground(Color.decode("#9f9f9f"));
 		return menubar;
+	 }
+	 
+	 private JMenuItem deco()
+	 {
+		 JMenuItem itemMenu = new JMenuItem("déconnexion");
+		 itemMenu.setFont(new Font("Serif", Font.PLAIN, 20));
+		 itemMenu.setBackground(Color.decode("#9f9f9f"));
+		 itemMenu.setForeground(Color.decode("#fafafa"));
+		 itemMenu.addActionListener(gérerdeco());
+		 return itemMenu;
+	 }
+	 
+	 private ActionListener gérerdeco() {
+		 return new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+						employes.dispose();
+						Connexions account = new Connexions(gestionPersonnel);
+						account.signIn();
+				}
+			};
 	 }
 
 	 private JMenuItem menuItem()
@@ -197,8 +220,15 @@ public class editEmploye {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String p= new String(password.getPassword());
-				 if(mail.getText().contains("@") && !p.equals("") && !nom.getText().equals("") && !prenom.getText().equals("")) {
-					 	 employe.setMail(mail.getText());
+				Integer mois =0;
+				Integer jour =0;	
+				if(!dateArrive.getText().isEmpty()) {
+				String date =new String(dateArrive.getText());
+				 mois = Integer.parseInt(date.substring(5,7));
+				 jour =Integer.parseInt(date.substring(8,10));					
+				}
+				 if(mail.getText().contains("@") && !p.equals("") && !nom.getText().equals("") && !prenom.getText().equals("") && mois<=12 && mois>=1 && jour<=31 && jour>=1 && !dateArrive.getText().isEmpty()) {
+				 	 	 employe.setMail(mail.getText());
 					 	 employe.setNom(nom.getText());
 					 	 employe.setPrenom(prenom.getText());
 					 	 employe.setPassword(p);

@@ -139,6 +139,28 @@ public class listEmployesLigue {
 		 menubar.setBackground(Color.decode("#9f9f9f"));
 		return menubar;
 	}
+	 private JMenuItem deco()
+	 {
+		 JMenuItem itemMenu = new JMenuItem("déconnexion");
+		 itemMenu.setFont(new Font("Serif", Font.PLAIN, 20));
+		 itemMenu.setBackground(Color.decode("#9f9f9f"));
+		 itemMenu.setForeground(Color.decode("#fafafa"));
+		 itemMenu.addActionListener(gérerdeco());
+		 return itemMenu;
+	 }
+	 
+	 private ActionListener gérerdeco() {
+		 return new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+						employes.dispose();
+						Connexions account = new Connexions(gestionPersonnel);
+						account.signIn();
+				}
+			};
+	 }
+
 	
 	private JMenu menuLigues()
 	{
@@ -147,6 +169,7 @@ public class listEmployesLigue {
 		 ligues.setForeground(Color.decode("#fafafa"));
 		 ligues.addSeparator();
          ligues.add(menuItem());
+         ligues.add(deco());
 		 return ligues;
 	}
 	

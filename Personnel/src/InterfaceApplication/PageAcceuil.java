@@ -172,6 +172,7 @@ public class PageAcceuil {
 		 JMenu menu = new JMenu("Compte root");
 		 //itéme quand cliquer sur le btn
 		 menu.add(menuItem());
+		 menu.add(deco());
 		 //stuyle btn
 		 menu.setFont(new Font("Serif", Font.BOLD, 20));
 		 menu.setForeground(Color.decode("#fafafa"));
@@ -179,6 +180,28 @@ public class PageAcceuil {
 		 menubar.add(menu);
 		return menubar;
 	 }
+	 private JMenuItem deco()
+	 {
+		 JMenuItem itemMenu = new JMenuItem("déconnexion");
+		 itemMenu.setFont(new Font("Serif", Font.PLAIN, 20));
+		 itemMenu.setBackground(Color.decode("#9f9f9f"));
+		 itemMenu.setForeground(Color.decode("#fafafa"));
+		 itemMenu.addActionListener(gérerdeco());
+		 return itemMenu;
+	 }
+	 
+	 private ActionListener gérerdeco() {
+		 return new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+						home.dispose();
+						Connexions account = new Connexions(gestionPersonnel);
+						account.signIn();
+				}
+			};
+	 }
+
 	 
 	 
 	 private JMenuItem menuItem()

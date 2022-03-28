@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -76,9 +77,32 @@ public class RootData {
 		 menu.setFont(new Font("Serif", Font.BOLD, 20));
 		 menu.setForeground(Color.decode("#fafafa"));
 		 menu.setSize(80,80);
+		 menu.add(deco());
 		 menubar.add(menu);
 		return menubar;
 	 }
+	 private JMenuItem deco()
+	 {
+		 JMenuItem itemMenu = new JMenuItem("déconnexion");
+		 itemMenu.setFont(new Font("Serif", Font.PLAIN, 20));
+		 itemMenu.setBackground(Color.decode("#9f9f9f"));
+		 itemMenu.setForeground(Color.decode("#fafafa"));
+		 itemMenu.addActionListener(gérerdeco());
+		 return itemMenu;
+	 }
+	 
+	 private ActionListener gérerdeco() {
+		 return new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+						account.dispose();
+						Connexions account = new Connexions(gestionPersonnel);
+						account.signIn();
+				}
+			};
+	 }
+
 
 	private JPanel panelCobtainer()
 	{
