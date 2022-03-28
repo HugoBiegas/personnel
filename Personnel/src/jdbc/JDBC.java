@@ -52,7 +52,7 @@ public class JDBC implements Passerelle
 				
 				gestionPersonnel.addLigue(ligues.getInt("num_ligue"), ligues.getString("nom_ligue"));
 				//requet préparer
-		        PreparedStatement response = connection.prepareStatement("SELECT * FROM employe WHERE num_ligue_Actu = ?");
+		        PreparedStatement response = connection.prepareStatement("SELECT e.id_employe,nom_employe,prenom_employe,mail_employe,password_employe,dateArrivee_employe,dateDepart_employe,admin FROM employe e, fincontrat f WHERE e.id_employe=f.id_employe AND num_ligue_Actu = ? ");
 		        response.setInt(1, ligues.getInt("num_ligue"));
 		        ResultSet employe = response.executeQuery();
 		        Ligue ligue = gestionPersonnel.getLigues().last();
@@ -207,9 +207,12 @@ public class JDBC implements Passerelle
 			instruction2.setString(5, employe.getDateArrivee() == null ? null :  String.valueOf(employe.getDateArrivee()));
 			instruction2.setInt(6, employe.getLigue().getId());
 			instruction2.executeUpdate();
-			//récupérer l'id de l'employer enregistrer
 			ResultSet id = instruction2.getGeneratedKeys();
 			id.next();
+			instruction2 = connection.prepareStatement("INSERT INTO FinContrat (dateDepart_employe) VALUES (?)");
+			instruction2.setString(1, null);
+			instruction2.executeUpdate();
+			//récupérer l'id de l'employer enregistrer
 			return id.getInt(1);
 		}
 		catch (SQLException exception)
@@ -226,8 +229,7 @@ public class JDBC implements Passerelle
 		try 
 		{
 			PreparedStatement instruction;
-	        instruction = connection.prepareStatement("UPDATE employe SET " + dataList + "= ? WHERE id_employe = ?");
-	        PreparedStatement instructionDate = connection.prepareStatement("UPDATE fincontrat SET " + dataList + "= ? WHERE id_employe = ?");
+	        instruction = connection.prepareStatement("UPDATE employe e,FinContrat f SET " + dataList + "= ? WHERE e.id_employe = ?");
 	        //on créer une map avec tout les données de l'employer actuelle
 			Map <String, String> map = new HashMap<>();
 					map.put("nom_employe", employe.getNom());
@@ -235,6 +237,7 @@ public class JDBC implements Passerelle
 					map.put("mail_employe", employe.getMail());
 					map.put("password_employe", employe.getPassword());
 					map.put("dateArrivee_employe", String.valueOf(employe.getDateArrivee()).isEmpty() ? null : String.valueOf(employe.getDateArrivee()));
+					map.put("dateDepart_employe", String.valueOf(employe.getDateDepart()).isEmpty() ? null : String.valueOf(employe.getDateDepart()));
 		//on prent la partie ou le nom du champ et égale aux nom que l'on veux modifier
 		instruction.setString(1, map.get(dataList));
 		//on récupére l'id pour l'envoiler
@@ -242,14 +245,9 @@ public class JDBC implements Passerelle
 	    //on lance l'ubdate
 		instruction.executeUpdate();
 		
-		instructionDate.setString(1, String.valueOf(employe.getDateDepart()).isEmpty() ? null : String.valueOf(employe.getDateDepart()));
-	    instruction.setInt(2, employe.getId());
-		instruction.executeUpdate();
-		
 		}
 		catch (SQLException e) 
 		{
-			
 			throw new SauvegardeImpossible(e);
 	}
 	}
@@ -303,9 +301,10 @@ public class JDBC implements Passerelle
 			instruction.setString(4, employe.getPassword());
 			instruction.setInt(5, 1);
 			instruction.executeUpdate();
-			PreparedStatement instructionDate = connection.prepareStatement("INSERT INTO FinContrat (dateDepart_employe) VALUES (?)");
-			instructionDate.setString(1, null);
-			instructionDate.executeUpdate();
+
+			instruction = connection.prepareStatement("INSERT INTO FinContrat (dateDepart_employe) VALUES (?)");
+			instruction.setString(1, null);
+			instruction.executeUpdate();
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -372,7 +371,7 @@ public class JDBC implements Passerelle
 	{
 		try {
 			Statement intruction = connection.createStatement();
-			String requete = "SELECT * FROM employe WHERE superAdmin = 1";
+			String requete = "SELECT e.id_employe,nom_employe,prenom_employe,mail_employe,password_employe,dateArrivee_employe,dateDepart_employe FROM employe e,FinContrat f WHERE e.id_employe=f.id_employe AND superAdmin = 1";
 			ResultSet response = intruction.executeQuery(requete);
 			if(!response.next()) {
 				setRoot(superadmin);
@@ -402,7 +401,7 @@ public class JDBC implements Passerelle
 	{
 		try {
 			Statement intruction = connection.createStatement();
-			String requete = "SELECT * FROM employe WHERE admin = 1";
+			String requete = "SELECT e.id_employe,nom_employe,prenom_employe,mail_employe,password_employe,dateArrivee_employe,dateDepart_employe FROM employe e,FinContrat f  WHERE e.id_employe=f.id_employe AND admin = 1";
 			ResultSet response = intruction.executeQuery(requete);
 			if(!response.next()) {
 				setRoot(admin);

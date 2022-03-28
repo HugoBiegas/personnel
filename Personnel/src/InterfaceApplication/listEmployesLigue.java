@@ -237,7 +237,12 @@ public class listEmployesLigue {
 		            JList source = (JList)e.getSource();
 		            Employe selectedEmploye = (Employe) source.getSelectedValue();
 		            frame().setVisible(false);
-		            InfoEmploye employe = new InfoEmploye(gestionPersonnel, selectedEmploye, ligue, connectedEmploye);
+		            InfoEmploye employe;
+		            if(Histo==true)
+		            	 employe = new InfoEmploye(gestionPersonnel, selectedEmploye, ligue, connectedEmploye,true);
+		            else
+		            	 employe = new InfoEmploye(gestionPersonnel, selectedEmploye, ligue, connectedEmploye,false);
+
 		            employe.employeShow();
 		        }
 			}

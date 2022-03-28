@@ -20,8 +20,8 @@ CREATE TABLE EMPLOYE(
 )ENGINE = INNODB;
 
 CREATE TABLE FinContrat(
-	id_employe INT PRIMARY KEY,
-    dateDepart_employe DATETIME
+	id_employe INT PRIMARY KEY AUTO_INCREMENT,
+    dateDepart_employe DATETIME 
 )ENGINE=INNODB;
 
 

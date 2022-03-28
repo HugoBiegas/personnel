@@ -52,13 +52,15 @@ public class InfoEmploye {
 	private  Ligue ligue;
 	private  Employe connectedEmploye;
 	private  JFrame employeData = new JFrame();
+	private boolean Histo=false;
 
 	
-	public InfoEmploye(GestionPersonnel gestionPersonnel, Employe selectedEmploye, Ligue ligue, Employe connectedEmploye) {
+	public InfoEmploye(GestionPersonnel gestionPersonnel, Employe selectedEmploye, Ligue ligue, Employe connectedEmploye,boolean Histo) {
 		   this.gestionPersonnel = gestionPersonnel;
 		   this.selectedEmploye = selectedEmploye;
 		   this.ligue = ligue;
 		   this.connectedEmploye = connectedEmploye;
+		   this.Histo=Histo;
 	}
 	
 	public void employeShow()
@@ -254,7 +256,7 @@ public class InfoEmploye {
 	private JButton edit()
 	{
 		JButton edit = new JButton("Editer");
-		  if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye)) {
+		  if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye) || Histo==true) {
 			  edit.setEnabled(false);
 		 }
 		edit.setPreferredSize(new Dimension(130, 30));
@@ -280,7 +282,7 @@ public class InfoEmploye {
 	private JButton delete()
 	{
 		JButton delete = new JButton("Supprimer");
-		if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye)) {
+		if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye)|| Histo==true) {
 			delete.setEnabled(false);
 		 }
 		delete.setBackground(Color.decode("#540b0e"));
@@ -321,7 +323,7 @@ public class InfoEmploye {
 			btn.setText("Mettre en admin");
 		}
 		//si il est pas admin ou root
-		if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye)) {
+		if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye)|| Histo==true) {
 			btn.setEnabled(false);
 		 }
 		btn.setBackground(Color.decode("#540b0e"));
