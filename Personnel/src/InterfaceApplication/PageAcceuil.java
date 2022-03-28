@@ -279,7 +279,7 @@ public class PageAcceuil {
 			            //récupérations du nom de la ou on a cliquer 
 			            Ligue selected = (Ligue) source.getSelectedValue();
 			            //créations de la prochaine fenettre
-			            listEmployesLigue ligue = new listEmployesLigue(gestionPersonnel,selected, connectedEmploye);
+			            listEmployesLigue ligue = new listEmployesLigue(gestionPersonnel,selected, connectedEmploye,false);
 			            //
 			            ligue.listEmployes();
 			            home.dispose();

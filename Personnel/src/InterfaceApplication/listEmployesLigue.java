@@ -49,11 +49,13 @@ public class listEmployesLigue {
 	private  Ligue ligue;
 	private Employe connectedEmploye;
 	private JFrame employes = new JFrame();
+	private boolean Histo=false;
 	
-	 public listEmployesLigue(GestionPersonnel gestionPersonnel, Ligue ligue, Employe connectedEmploye) {
+	 public listEmployesLigue(GestionPersonnel gestionPersonnel, Ligue ligue, Employe connectedEmploye,boolean Histo) {
 		    this.gestionPersonnel = gestionPersonnel;
 		    this.ligue = ligue;
 		    this.connectedEmploye = connectedEmploye;
+		    this.Histo = Histo;
 	}
 	 
 	public void listEmployes()
@@ -124,7 +126,11 @@ public class listEmployesLigue {
 	
 	private JLabel notEmployesFunded()
 	{
-		JLabel label = new JLabel("Il y a aucun employé dans cette ligue");
+		JLabel label;
+		if(Histo == true)
+			 label = new JLabel("il n'y as pas d'employé virer dans cette ligue");
+		else
+			 label = new JLabel("Il y a aucun employé dans cette ligue");
 		label.setFont(new Font("Serif", Font.BOLD, 22));
 		label.setForeground(Color.decode("#cbc0d3"));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -204,7 +210,11 @@ public class listEmployesLigue {
 		//utilisateions des model pour mettre tout les employer
 		for(Employe employe : emp)
 		{
-			listEmp.addElement(employe);
+			if(Histo == false && employe.getDateDepart() == null)
+				listEmp.addElement(employe);
+			else if(Histo == true && employe.getDateDepart() !=null)
+				listEmp.addElement(employe);
+			
 		}
 		empL.addListSelectionListener(listeEploye());
 		 empL.setFont(new Font("Serif", Font.BOLD, 22));
@@ -238,7 +248,10 @@ public class listEmployesLigue {
 	{
 		JLabel title = new JLabel();
 		//nom de la ligue et de l'admin
-		title.setText(ligue.getNom() + " administrée par  " + ligue.getAdministrateur().getNom());
+		if(Histo == true)
+			title.setText("Historique de la ligue :"+ligue.getNom());
+		else
+			title.setText(ligue.getNom() + " administrée par  " + ligue.getAdministrateur().getNom());
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("Serif", Font.BOLD, 27));
 		title.setForeground(Color.decode("#540b0e"));
@@ -267,13 +280,14 @@ public class listEmployesLigue {
 		panel.add(delete);
 		panel.add(rename);
 		panel.add(addEmploye);
+		panel.add(histo());
 		return panel;
 	}
 	
 	private JButton renameLigue()
 	{
 	    JButton renameLigue = new JButton("Renommer la ligue");
-	    if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye)) {
+	    if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye) || Histo==true) {
 	    	renameLigue.setEnabled(false);
 	 }
 	    renameLigue.setFont(new Font("Serif", Font.BOLD, 18));
@@ -308,7 +322,7 @@ public class listEmployesLigue {
 	private JButton deleteLigue()
 	{
 		JButton deleteLigue = new JButton("Supprimer la ligue");
-		 if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye)) {
+		 if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye) || Histo==true) {
 			      deleteLigue.setEnabled(false);
 		 }
 		deleteLigue.setFont(new Font("Serif", Font.BOLD, 18));
@@ -351,9 +365,16 @@ public class listEmployesLigue {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PageAcceuil pageLigues = new PageAcceuil(gestionPersonnel, connectedEmploye);
+				if(Histo == true) {
+						listEmployesLigue pageLigues = new listEmployesLigue(gestionPersonnel,ligue, connectedEmploye,false);
+						pageLigues.listEmployes();
+				}
+				else {
+					PageAcceuil pageLigues = new PageAcceuil(gestionPersonnel, connectedEmploye);
+					pageLigues.frame().setVisible(true);
+
+				}
 				employes.dispose();
-				pageLigues.frame().setVisible(true);
 			}
 		};
 	}
@@ -361,7 +382,7 @@ public class listEmployesLigue {
 	private JButton addEmploye()
 	{
 		JButton addEmploye = new JButton("Ajouter un employé");
-		if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye)) {
+		if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye) || Histo==true) {
 			addEmploye.setEnabled(false);
 	 }
 		addEmploye.setFont(new Font("Serif", Font.BOLD, 20));
@@ -378,6 +399,29 @@ public class listEmployesLigue {
 				AddChangeEmploye add = new AddChangeEmploye(gestionPersonnel, ligue, connectedEmploye);
 				employes.dispose();
 				add.AddEmploye();
+			}
+		};
+	}
+	private JButton histo()
+	{
+		JButton addEmploye = new JButton("Historique ligue");
+		if(!gestionPersonnel.haveWritePermission(ligue, connectedEmploye) || Histo==true) {
+			addEmploye.setEnabled(false);
+	 }
+		addEmploye.setFont(new Font("Serif", Font.BOLD, 20));
+		addEmploye.setBackground(Color.decode("#540b0e"));
+		addEmploye.setForeground(Color.decode("#fafafa"));
+		addEmploye.addActionListener(addhistoAction());
+		return addEmploye;
+	}
+	
+	private ActionListener addhistoAction() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listEmployesLigue add = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,true);
+				employes.dispose();
+				add.listEmployes();
 			}
 		};
 	}

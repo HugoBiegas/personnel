@@ -234,7 +234,7 @@ public class editEmploye {
 					 	 employe.setPassword(p);
 					 	 employe.updateEmploye(connectedEmploye);
 						 employes.dispose();
-						 listEmployesLigue employespage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
+						 listEmployesLigue employespage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
 						 employespage.listEmployes();	
 				 }
 				 else 
@@ -259,7 +259,7 @@ public class editEmploye {
 			public void actionPerformed(ActionEvent e) {
 				  frame().setVisible(false);
 				  frame().dispose();
-				  listEmployesLigue employespage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
+				  listEmployesLigue employespage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
 				  employespage.listEmployes();
 			}
 		};

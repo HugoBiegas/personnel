@@ -38,6 +38,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
+import personnel.DateInvalideException;
 import personnel.Employe;
 import personnel.GestionPersonnel;
 import personnel.Ligue;
@@ -244,7 +245,7 @@ public class InfoEmploye {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 					 frame().setVisible(false);
-					 listEmployesLigue list = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
+					 listEmployesLigue list = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
 					 list.frame().setVisible(true);
 			}
 		};
@@ -292,14 +293,17 @@ public class InfoEmploye {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					try {
-						selectedEmploye.remove();
-					} catch (SauvegardeImpossible e1) {
-						e1.printStackTrace();
-					}
+						try {
+							selectedEmploye.setDateDepart(LocalDate.now());
+						} catch (DateInvalideException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						};
+						selectedEmploye.updateEmploye(selectedEmploye);
+
 					JOptionPane.showMessageDialog(null, "L'employé a été supprimé", "supprimer l'employé", JOptionPane.INFORMATION_MESSAGE);
 					employeData.dispose();
-					listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
+					listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
 					employesPage.listEmployes();
 				}
 		};
@@ -336,7 +340,7 @@ public class InfoEmploye {
 					ligue.setAdmin(selectedEmploye);
 					JOptionPane.showMessageDialog(null, "L'émployé est maintenant l'admin de la ligue" + ligue.getNom() + ".", "Nommer admin", JOptionPane.INFORMATION_MESSAGE);
 					employeData.dispose();
-					listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
+					listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
 					employesPage.listEmployes();
 				}
 				else if(selectedEmploye.estAdmin(ligue)) {
@@ -346,7 +350,7 @@ public class InfoEmploye {
 						e.printStackTrace();
 					} 
 					employeData.dispose();
-					listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
+					listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
 					employesPage.listEmployes();
 				}
 			}

@@ -199,7 +199,7 @@ public class AddChangeEmploye {
 				if(!p.equals("") && !nom.getText().equals("") && !prenom.getText().equals("") && mail.getText().contains("@")) {
 					ligue.addEmploye(nom.getText(), prenom.getText(), mail.getText(),p,LocalDate.now(),null);
 					employeAdd.dispose();
-		            listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
+		            listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
 					employesPage.listEmployes();
 				}
 				else
@@ -223,7 +223,7 @@ public class AddChangeEmploye {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				employeAdd.dispose();
-				listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye);
+				listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
 				employesPage.listEmployes();
 			}
 		};
