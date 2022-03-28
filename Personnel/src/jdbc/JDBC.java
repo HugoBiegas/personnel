@@ -227,6 +227,7 @@ public class JDBC implements Passerelle
 		{
 			PreparedStatement instruction;
 	        instruction = connection.prepareStatement("UPDATE employe SET " + dataList + "= ? WHERE id_employe = ?");
+	        PreparedStatement instructionDate = connection.prepareStatement("UPDATE fincontrat SET " + dataList + "= ? WHERE id_employe = ?");
 	        //on créer une map avec tout les données de l'employer actuelle
 			Map <String, String> map = new HashMap<>();
 					map.put("nom_employe", employe.getNom());
@@ -234,13 +235,17 @@ public class JDBC implements Passerelle
 					map.put("mail_employe", employe.getMail());
 					map.put("password_employe", employe.getPassword());
 					map.put("dateArrivee_employe", String.valueOf(employe.getDateArrivee()).isEmpty() ? null : String.valueOf(employe.getDateArrivee()));
-					map.put("dateDepart_employe", String.valueOf(employe.getDateDepart()).isEmpty() ? null : String.valueOf(employe.getDateDepart()));
 		//on prent la partie ou le nom du champ et égale aux nom que l'on veux modifier
 		instruction.setString(1, map.get(dataList));
 		//on récupére l'id pour l'envoiler
 	    instruction.setInt(2, employe.getId());
 	    //on lance l'ubdate
 		instruction.executeUpdate();
+		
+		instructionDate.setString(1, String.valueOf(employe.getDateDepart()).isEmpty() ? null : String.valueOf(employe.getDateDepart()));
+	    instruction.setInt(2, employe.getId());
+		instruction.executeUpdate();
+		
 		}
 		catch (SQLException e) 
 		{
@@ -255,8 +260,8 @@ public class JDBC implements Passerelle
 		try
 		{
 			PreparedStatement listEmploye;
-			listEmploye = connection.prepareStatement("UPDATE employe set dateDepart_employe= ? WHERE id_employe=?");
-			listEmploye.setString(1, "2020-10-10");
+			listEmploye = connection.prepareStatement("UPDATE fincontrat set dateDepart_employe= ? WHERE id_employe=?");
+			listEmploye.setString(1, String.valueOf(employe.getDateDepart()).isEmpty() ? null : String.valueOf(employe.getDateDepart()) );
 			listEmploye.setInt(2, employe.getId());
 			listEmploye.executeUpdate();
 		}
@@ -298,6 +303,9 @@ public class JDBC implements Passerelle
 			instruction.setString(4, employe.getPassword());
 			instruction.setInt(5, 1);
 			instruction.executeUpdate();
+			PreparedStatement instructionDate = connection.prepareStatement("INSERT INTO FinContrat (dateDepart_employe) VALUES (?)");
+			instructionDate.setString(1, null);
+			instructionDate.executeUpdate();
 		}
 		catch (SQLException e) {
 			e.printStackTrace();

@@ -14,14 +14,21 @@ CREATE TABLE EMPLOYE(
     mail_employe VARCHAR(32) NOT NULL,
     password_employe VARCHAR(32) NOT NULL,
     dateArrivee_employe DATETIME,
-    dateDepart_employe DATETIME,
     admin INT DEFAULT 0,
     superAdmin INT DEFAULT 0,
     num_ligue_Actu INT NULL
 )ENGINE = INNODB;
 
+CREATE TABLE FinContrat(
+	id_employe INT PRIMARY KEY,
+    dateDepart_employe DATETIME
+)ENGINE=INNODB;
 
 
 ALTER Table EMPLOYE
-	ADD CONSTRAINT Fk_L_E FOREIGN KEY (num_ligue_Actu) REFERENCES LIGUE(num_ligue) ON DELETE CASCADE;
+	ADD CONSTRAINT Fk_E_L FOREIGN KEY (num_ligue_Actu) REFERENCES LIGUE(num_ligue) ON DELETE CASCADE;
+
+ALTER Table FinContrat
+	ADD CONSTRAINT Fk_E_FC FOREIGN KEY (id_employe) REFERENCES EMPLOYE(id_employe) ON DELETE CASCADE;
+	
 
