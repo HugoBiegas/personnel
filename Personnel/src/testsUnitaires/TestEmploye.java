@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
+import commandLine.DateInvalideException;
 import personnel.*;
 
 
@@ -155,8 +156,8 @@ class testEmploye
 	 @Test
      void remove() throws SauvegardeImpossible
      {
-             Ligue ligue = gestionPersonnel.addLigue("Fl�chettes");
-             Employe employe = ligue.addEmploye("Bouchard", "G�rard", "g.bouchard@gmail.com", "azerty", null, null);
+             Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
+             Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", null, null);
              Employe employe2 = GestionPersonnel.getGestionPersonnel().getRoot();
              ligue.setAdministrateur(employe);
              employe.remove();

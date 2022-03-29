@@ -8,11 +8,11 @@ public class CredentialsExample
 	private static String port = "3306";
 	private static String database = "personnel";
 	private static String user = "root";
-	private static String password = "";
+	private static String password = "root";
 	
 	static String getUrl() 
 	{
-		return "jdbc:" + driver + "://" + host + ":" + port + "/" + database +"?serverTimezone=UTC";
+		return "jdbc:" + driver + "://" + host + ":" + port + "/" + database ;
 	}
 	
 	static String getDriverClassName()

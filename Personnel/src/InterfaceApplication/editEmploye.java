@@ -25,7 +25,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import personnel.DateInvalideException;
 import personnel.Employe;
 import personnel.GestionPersonnel;
 import personnel.Ligue;
