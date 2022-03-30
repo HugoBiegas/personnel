@@ -292,6 +292,25 @@ public class JDBC implements Passerelle
 		}
 	}
 	
+	@Override
+	public void RestAdmin(Employe employe) throws SauvegardeImpossible 
+	{
+		try 
+		{
+			PreparedStatement listEmploye;
+			listEmploye = connection.prepareStatement("UPDATE employe SET admin = ? WHERE num_ligue_Actu = ? AND id_employe = ?");
+			listEmploye.setInt(1, 0);
+			listEmploye.setInt(2, employe.getLigue().getId());
+			listEmploye.setInt(3, employe.getId());
+			listEmploye.executeUpdate();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+			throw new SauvegardeImpossible(e);
+		}
+	}
+	
 	public void setRoot(Employe employe) 
 	{
 		try {
@@ -353,23 +372,7 @@ public class JDBC implements Passerelle
 	
 	
 	
-	public void setAdmin(Employe employe) throws SauvegardeImpossible
-	{
-		try 
-		{
-			PreparedStatement tableEmploye;
-			// on regarde si l'admin actuelle ces cette employer si oui on faite rien si non
-			tableEmploye = connection.prepareStatement("UPDATE employe SET admin = (CASE WHEN id_employe = ? THEN 1 WHEN id_employe <> ? THEN 0 END) WHERE num_ligue_Actu = ?");
-			tableEmploye.setInt(1, employe.getId());
-			tableEmploye.setInt(2, employe.getId());
-			tableEmploye.setInt(3, employe.getLigue().getId());
-			tableEmploye.executeUpdate();
-		} 
-		catch (SQLException e) 
-		{
-			throw new SauvegardeImpossible(e);
-		}
-	}
+
 	
 	public Employe getSuperAdmin(Employe superadmin) throws SauvegardeImpossible
 	{

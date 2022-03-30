@@ -196,6 +196,11 @@ public class GestionPersonnel implements Serializable
 		
 	}
 	
+	public void RestAdmin(Employe employe) throws SauvegardeImpossible 
+	{
+		passerelle.RestAdmin(employe);
+	}
+	
 	public void updateRoot(Employe employe) throws SauvegardeImpossible
 	{
 		passerelle.updateRoot(employe);
@@ -205,7 +210,7 @@ public class GestionPersonnel implements Serializable
 	{
 		try
 		{
-			passerelle.setAdmin(employe);
+			passerelle.SetAdmin(employe);
 		}
 		catch(SauvegardeImpossible e)
 		{

@@ -114,11 +114,8 @@ public class Serialization implements personnel.Passerelle
 		// TODO Auto-generated method stub
 		
 	}
-
 	@Override
-	public void setAdmin(Employe employe) throws SauvegardeImpossible {
-		// TODO Auto-generated method stub
-		
+	public void RestAdmin(Employe employe) throws SauvegardeImpossible{
 	}
 
 	@Override
