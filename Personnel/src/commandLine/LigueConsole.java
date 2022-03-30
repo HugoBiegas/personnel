@@ -63,7 +63,7 @@ public class LigueConsole
 			
 			if(ligue.getEmployes().size() == 0)
 			{
-				System.out.println("Il n'y a aucun employé dans cette ligue");
+				System.out.println("Il n'y a aucun employï¿½ dans cette ligue");
 			}
 		});
 	}
@@ -102,7 +102,7 @@ public class LigueConsole
 	{
 		return new Option("Renommer", "r", 
 				() -> {ligue.setNom(getString("Nouveau nom : "));
-				System.out.println("La ligue a bien été renommée par" + ligue.getNom());
+				System.out.println("La ligue a bien ï¿½tï¿½ renommï¿½e par" + ligue.getNom());
 				});
 		      
 	}
@@ -137,7 +137,7 @@ public class LigueConsole
 					System.out.println("Ajouter un employe");
 					ligue.addEmploye(getString("nom : "), 
 							getString("prenom : "), getString("mail : "), 
-						    getString("password : "), LocalDate.parse(getString("Date d'arrivée (YYYY-MM-DD) : ")), null);
+						    getString("password : "), LocalDate.parse(getString("Date d'arrivï¿½e (YYYY-MM-DD) : ")), null);
 					
 					}
 		);
@@ -151,7 +151,7 @@ public class LigueConsole
 		try {
 			menu.add(ajouterEmploye(ligue));
 		} catch (SauvegardeImpossible e) {
-			System.err.println("Impossible de sauvegarder cet employé");
+			System.err.println("Impossible de sauvegarder cet employï¿½");
 			e.printStackTrace();
 		}
 		menu.add(selectionnerEmploye(ligue));
@@ -177,7 +177,7 @@ public class LigueConsole
 		List<Employe> EmployeList = new List<>("Supprimer un employÃ©", "s", 
 				() -> new ArrayList<>(ligue.getEmployes()),
 				(index, element) -> {try {
-					element.remove();
+					element.remove(element);
 				} catch (SauvegardeImpossible e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

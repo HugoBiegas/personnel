@@ -160,7 +160,7 @@ class testEmploye
              Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", null, null);
              Employe employe2 = GestionPersonnel.getGestionPersonnel().getRoot();
              ligue.setAdministrateur(employe);
-             employe.remove();
+             employe.remove(employe);
              assertFalse(ligue.getEmployes().contains(employe));
              assertTrue(ligue.getAdministrateur().equals(employe2));
             

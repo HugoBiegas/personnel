@@ -253,9 +253,8 @@ public class PageAcceuil {
 			}			 
 		 }else {
 			 for (Ligue ligue : choix) {
-				 if(ligue.getNom().equals(connectedEmploye.getLigue().getNom()))
 					 listLigue.addElement(ligue);
-				} 
+			 }
 		 }
 
 		 listLigues.addListSelectionListener(ItemAction());

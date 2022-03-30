@@ -70,23 +70,22 @@ public class JDBC implements Passerelle
 		        	String date = employe.getString("dateArrivee_employe");
 		        	date= date.substring(0, 10);
 		        	dateArrivee = LocalDate.parse(date);
-		        }else {
+		        }else 
 		        	dateArrivee =null;
-		        }
 		        //si employe.getString("dateDepart_employe") et différent de null on lui mais la valeur en local date sinon on lui attribu null		        
 		        if(employe.getString("dateDepart_employe") != null) {
 		        	String date = employe.getString("dateDepart_employe");
 		        	date= date.substring(0, 10);
 		        	dateDepart = LocalDate.parse(date);
-		        }else {
-		        	dateDepart =null;
-		        }			    
+		        }else 
+		        	dateDepart =null;   
 		        Employe employes = ligue.addEmploye(nom, prenom, mail, password, dateDepart,dateArrivee, id);
 			    //si il est admin d'une ligue
 			    if(employe.getBoolean("admin")) {
 			    	ligue.setAdministrateur(employes);
 			    }
-			} }
+			} 
+			}
 		}
 		catch (SQLException e)
 		{
@@ -366,14 +365,7 @@ public class JDBC implements Passerelle
 			throw new SauvegardeImpossible(e);
 		}
 	}
-	
-	
-	
-	
-	
-	
 
-	
 	public Employe getSuperAdmin(Employe superadmin) throws SauvegardeImpossible
 	{
 		try {

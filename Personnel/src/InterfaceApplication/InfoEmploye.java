@@ -296,7 +296,7 @@ public class InfoEmploye {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					selectedEmploye.remove();
+					selectedEmploye.remove(selectedEmploye);
 				} catch (SauvegardeImpossible e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();

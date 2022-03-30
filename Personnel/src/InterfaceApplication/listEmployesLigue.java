@@ -224,7 +224,6 @@ public class listEmployesLigue {
 		 renderer.setHorizontalAlignment(JLabel.CENTER);
 		 empL.setFixedCellWidth(500);
 		 empL.setFixedCellHeight(40);
-		 
 		return empL;
 	}
 	
@@ -233,6 +232,7 @@ public class listEmployesLigue {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
+				//si il y as un changement 
 				if (!e.getValueIsAdjusting()){
 		            JList source = (JList)e.getSource();
 		            Employe selectedEmploye = (Employe) source.getSelectedValue();
