@@ -251,12 +251,8 @@ public class Employe implements Serializable, Comparable<Employe>
 	{
 		Employe root = gestionPersonnel.getRoot();
 		if (this != root)
-		{
 			if (estAdmin(getLigue()))
 				getLigue().setAdministrateur(root);
-			gestionPersonnel.delete(this);
-			getLigue().remove(this);
-		}
 		else
 			throw new ImpossibleDeSupprimerRoot();
 	}

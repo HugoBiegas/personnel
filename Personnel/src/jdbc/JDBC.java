@@ -120,6 +120,7 @@ public class JDBC implements Passerelle
 		try 
 		{
 			PreparedStatement instruction;
+			//RETURN_GENERATED_KEYS permet de retourner la clée primére
 			instruction = connection.prepareStatement("insert into ligue (nom_ligue) values(?)", Statement.RETURN_GENERATED_KEYS);
 			instruction.setString(1, ligue.getNom());		
 			instruction.executeUpdate();
@@ -159,12 +160,13 @@ public class JDBC implements Passerelle
 		try
 		{
 			PreparedStatement instruction;
-			instruction = connection.prepareStatement("UPDATE employe SET nom_employe = ?, prenom_employe = ?, mail_employe = ? , password_employe = ? WHERE id_employe = ?");
+			instruction = connection.prepareStatement("UPDATE employe SET nom_employe = ?, prenom_employe = ?, mail_employe = ? , password_employe = ?, admin=? WHERE id_employe = ?");
 			instruction.setString(1, employe.getNom());
 			instruction.setString(2, employe.getPrenom());
 			instruction.setString(3, employe.getMail());
 			instruction.setString(4, employe.getPassword());
 			instruction.setInt(5, employe.getId());
+			instruction.setInt(6, 1);
 			instruction.executeUpdate();
 		}
 		catch (SQLException e) 
@@ -212,7 +214,7 @@ public class JDBC implements Passerelle
 			instruction2 = connection.prepareStatement("INSERT INTO FinContrat (dateDepart_employe) VALUES (?)");
 			instruction2.setString(1, null);
 			instruction2.executeUpdate();
-			//récupérer l'id de l'employer enregistrer
+			//récupérer l'id de l'employer enregistrer et l'envoiller 
 			return id.getInt(1);
 		}
 		catch (SQLException exception)
@@ -259,7 +261,7 @@ public class JDBC implements Passerelle
 		{
 			PreparedStatement listEmploye;
 			listEmploye = connection.prepareStatement("UPDATE fincontrat set dateDepart_employe= ? WHERE id_employe=?");
-			listEmploye.setString(1, String.valueOf(employe.getDateDepart()).isEmpty() ? null : String.valueOf(employe.getDateDepart()) );
+			listEmploye.setString(1, String.valueOf(LocalDate.now()));
 			listEmploye.setInt(2, employe.getId());
 			listEmploye.executeUpdate();
 		}
@@ -329,13 +331,14 @@ public class JDBC implements Passerelle
 			throw new SauvegardeImpossible(e);
 		}
 	}
+	
 	@Override
 	public void removeAdmin(Ligue ligue) throws SauvegardeImpossible
 	{
 		try
 		{
 			PreparedStatement tableEmploye;
-			tableEmploye = connection.prepareStatement("UPDATE employe SET admin = 0 WHERE num_ligue = ?");
+			tableEmploye = connection.prepareStatement("UPDATE employe SET admin = 0 WHERE num_ligue_Actu = ?");
 			tableEmploye.setInt(1, ligue.getId());
 			tableEmploye.executeUpdate();
 		}
@@ -355,6 +358,7 @@ public class JDBC implements Passerelle
 		try 
 		{
 			PreparedStatement tableEmploye;
+			// on regarde si l'admin actuelle ces cette employer si oui on faite rien si non
 			tableEmploye = connection.prepareStatement("UPDATE employe SET admin = (CASE WHEN id_employe = ? THEN 1 WHEN id_employe <> ? THEN 0 END) WHERE num_ligue_Actu = ?");
 			tableEmploye.setInt(1, employe.getId());
 			tableEmploye.setInt(2, employe.getId());

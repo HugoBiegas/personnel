@@ -200,7 +200,9 @@ public class AddChangeEmploye {
 			public void actionPerformed(ActionEvent e) {
 				String p= new String(pass.getPassword());
 				if(!p.equals("") && !nom.getText().equals("") && !prenom.getText().equals("") && mail.getText().contains("@") && gestionPersonnel.isExistEmployeNomLigue(ligue.getId(),nom.getText())==false && gestionPersonnel.isExistEmployePrenomLigue(ligue.getId(),prenom.getText())==false) {
+					//ajouter un employer
 					ligue.addEmploye(nom.getText(), prenom.getText(), mail.getText(),p,LocalDate.now(),null);
+					//enlever la page actuelle et en ouvrire une autre 
 					employeAdd.dispose();
 		            listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
 					employesPage.listEmployes();

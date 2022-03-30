@@ -295,19 +295,23 @@ public class InfoEmploye {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-						try {
-							selectedEmploye.setDateDepart(LocalDate.now());
-						} catch (DateInvalideException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						};
-						selectedEmploye.updateEmploye(selectedEmploye);
-
-					JOptionPane.showMessageDialog(null, "L'employé a été supprimé", "supprimer l'employé", JOptionPane.INFORMATION_MESSAGE);
-					employeData.dispose();
-					listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
-					employesPage.listEmployes();
+				try {
+					selectedEmploye.remove();
+				} catch (SauvegardeImpossible e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
 				}
+				try {
+					selectedEmploye.setDateDepart(LocalDate.now());
+				} catch (DateInvalideException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				};
+				JOptionPane.showMessageDialog(null, "L'employé a été supprimé", "supprimer l'employé", JOptionPane.INFORMATION_MESSAGE);
+				employeData.dispose();
+				listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
+				employesPage.listEmployes();
+			}
 		};
 	}
 	

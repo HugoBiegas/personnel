@@ -114,10 +114,12 @@ public class Ligue implements Serializable, Comparable<Ligue>
 	
 	public Employe addEmploye(String nom, String prenom, String mail, String password, LocalDate dateArrivee, LocalDate dateDepart)
 	{
+		//ajoue de l'employer dans l'applie actuelle
 		Employe employe = new Employe(this.gestionPersonnel, this, nom, prenom, mail, password, dateArrivee, dateDepart);
 		employes.add(employe);
 		
 		try {
+			//ajoue de l' employer dans l'applications
 			employe.setId(gestionPersonnel.insert(employe));
 		} catch (SauvegardeImpossible e) {
 			e.printStackTrace();
