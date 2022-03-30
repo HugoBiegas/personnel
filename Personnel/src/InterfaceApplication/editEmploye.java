@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import commandLine.DateInvalideException;
 import personnel.Employe;
 import personnel.GestionPersonnel;
 import personnel.Ligue;
@@ -151,9 +152,26 @@ public class editEmploye {
 		panel.add(passwordInput());
 		panel.add(dateArriveeL());
 		panel.add(DateArriveInput());
+		panel.add(formaDate());
+		panel.add(forma());
 		panel.add(addEmploye());
 		panel.add(cancelAdd());
 		return panel;
+	}
+	
+	private JLabel forma()
+	{
+		JLabel forma = new JLabel("(YYYY-MM-JJ)");
+		forma.setFont(new Font("Serif", Font.PLAIN, 22));
+		forma.setForeground(Color.decode("#540b0e"));
+		 return forma;	
+	}
+	private JLabel formaDate()
+	{
+		JLabel formaDate = new JLabel("Format Date : ");
+		formaDate.setFont(new Font("Serif", Font.PLAIN, 22));
+		formaDate.setForeground(Color.decode("#540b0e"));
+		 return formaDate;	
 	}
 	
 	private JLabel nomL()
@@ -196,14 +214,6 @@ public class editEmploye {
 		 return dateArriveeL;	
 	}
 	
-	private JLabel dateDepartL()
-	{
-		JLabel dateDepartL = new JLabel("Date de départ : ");
-		dateDepartL.setFont(new Font("Serif", Font.PLAIN, 22));
-		dateDepartL.setForeground(Color.decode("#540b0e"));
-		 return dateDepartL;	
-	}
-	
 	private JButton addEmploye()
 	{
 		JButton addbtn = new JButton("Enregistrer");
@@ -221,22 +231,28 @@ public class editEmploye {
 				String p= new String(password.getPassword());
 				Integer mois =0;
 				Integer jour =0;	
-				if(!dateArrive.getText().isEmpty()) {
+				if(!dateArrive.getText().isEmpty() && dateArrive.getText().length() ==10) {
 				String date =new String(dateArrive.getText());
 				 mois = Integer.parseInt(date.substring(5,7));
 				 jour =Integer.parseInt(date.substring(8,10));					
-				}
-				 if(mail.getText().contains("@") && !p.equals("") && !nom.getText().equals("") && !prenom.getText().equals("") && mois<=12 && mois>=1 && jour<=31 && jour>=1 && !dateArrive.getText().isEmpty()) {
+				
+				 if(mail.getText().contains("@") && !p.equals("") && !nom.getText().equals("") && !prenom.getText().equals("") && mois<=12 && mois>=1 && jour<=31 && jour>=1 && !dateArrive.getText().isEmpty() ) {
 				 	 	 employe.setMail(mail.getText());
 					 	 employe.setNom(nom.getText());
 					 	 employe.setPrenom(prenom.getText());
 					 	 employe.setPassword(p);
+					 	 try {
+							employe.setDateArrivee(LocalDate.parse(dateArrive.getText().substring(0,10)));
+						} catch (DateInvalideException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					 	 employe.updateEmploye(connectedEmploye);
 						 employes.dispose();
 						 listEmployesLigue employespage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
 						 employespage.listEmployes();	
 				 }
-				 else 
+				 }else 
 					JOptionPane.showMessageDialog(null, "entrai des donnée valide", "Formulaire", JOptionPane.ERROR_MESSAGE);
 			}
 		};
