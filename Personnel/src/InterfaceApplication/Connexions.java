@@ -184,18 +184,18 @@ public class Connexions{
    				for(Ligue ligue : gestionPersonnel.getLigues()) {
    					//boucle sur tout les employers
       		    	 for(Employe employe : ligue.getEmployes()) {
-      		    	    if(p.equals(employe.getPassword()) && login.getText().equals(employe.getMail())) { 
-      		    	    	//envoi des imformations nésésére a la page d'acueil
-      		    			PageAcceuil home = new PageAcceuil(gestionPersonnel, employe);
-      		    			//rendre visible la page
-        				    home.frame().setVisible(true);
-        				    //fermeture de la fenettre de connections
-      		    			frame.dispose();
-      		    		 }
+      		    			 if(p.equals(employe.getPassword()) && login.getText().equals(employe.getMail()) && employe.getDateDepart() ==null) { 
+      		    				 //envoi des imformations nésésére a la page d'acueil
+      		    				 PageAcceuil home = new PageAcceuil(gestionPersonnel, employe);
+      		    				 //rendre visible la page
+      		    				 home.frame().setVisible(true);
+      		    				 //fermeture de la fenettre de connections
+      		    				 frame.dispose();
+      		    			 }
       		    	 }
       		     }
    			//si il as pas quiter la page bat ces que il a rentrer des movaise donnée
-   			passIncorrect.setText("email ou mot de passe incorrect!");
+   				passIncorrect.setText("email ou mot de passe incorrect!");
    			}	
    		}
         };
