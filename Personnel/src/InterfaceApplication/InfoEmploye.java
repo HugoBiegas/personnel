@@ -247,7 +247,11 @@ public class InfoEmploye {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 					 frame().setVisible(false);
-					 listEmployesLigue list = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
+					 listEmployesLigue list;
+					 if(Histo==true)
+						  list = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,true);
+					 else
+						  list = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
 					 list.frame().setVisible(true);
 			}
 		};
