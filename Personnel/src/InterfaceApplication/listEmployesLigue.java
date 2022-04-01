@@ -270,21 +270,9 @@ public class listEmployesLigue {
 		panel.setBackground(Color.decode("#9f9f9f"));
 		FlowLayout layout = new FlowLayout();
 		panel.setLayout(layout);
-		
-		Box delete = Box.createHorizontalBox();
-		delete.add(deleteLigue());
-		
-		
-		Box rename = Box.createHorizontalBox();
-		rename.add(renameLigue());
-		
-		
-		Box addEmploye = Box.createHorizontalBox();
-		addEmploye.add(addEmploye());
-		
-		panel.add(delete);
-		panel.add(rename);
-		panel.add(addEmploye);
+		panel.add(deleteLigue());
+		panel.add(renameLigue());
+		panel.add(addEmploye());
 		panel.add(histo());
 		return panel;
 	}

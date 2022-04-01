@@ -250,13 +250,10 @@ public class Employe implements Serializable, Comparable<Employe>
 	public void remove(Employe employe) throws SauvegardeImpossible
 	{
 		Employe root = gestionPersonnel.getRoot();
-		if (employe != root)
-			if (employe.estAdmin(getLigue())) {
-				employe.getLigue().setAdministrateur(root);
-				gestionPersonnel.RestAdmin(employe);	
-			}
-		else
-			throw new ImpossibleDeSupprimerRoot();
+		if (employe.estAdmin(getLigue())) {
+			employe.getLigue().setAdministrateur(root);
+			gestionPersonnel.RestAdmin(employe);	
+		}
 	}
 
 	@Override
