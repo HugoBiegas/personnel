@@ -300,17 +300,11 @@ public class InfoEmploye {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					selectedEmploye.remove(selectedEmploye);
-				} catch (SauvegardeImpossible e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-				try {
-					selectedEmploye.setDateDepart(LocalDate.now());
-				} catch (DateInvalideException e1) {
+					selectedEmploye.remove(selectedEmploye,ligue);
+				} catch (SauvegardeImpossible | DateInvalideException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				};
+				}
 				JOptionPane.showMessageDialog(null, "L'employé a été supprimé", "supprimer l'employé", JOptionPane.INFORMATION_MESSAGE);
 				employeData.dispose();
 				listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);
@@ -346,8 +340,8 @@ public class InfoEmploye {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(!selectedEmploye.estAdmin(ligue)) {
-					ligue.setAdministrateur(selectedEmploye);
-					ligue.setAdmin(selectedEmploye);
+					ligue.setAdministrateur(selectedEmploye,ligue);
+					ligue.setAdmin(selectedEmploye,ligue);
 					JOptionPane.showMessageDialog(null, "L'émployé est maintenant l'admin de la ligue" + ligue.getNom() + ".", "Nommer admin", JOptionPane.INFORMATION_MESSAGE);
 					employeData.dispose();
 					listEmployesLigue employesPage = new listEmployesLigue(gestionPersonnel, ligue, connectedEmploye,false);

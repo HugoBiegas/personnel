@@ -82,13 +82,13 @@ public class Ligue implements Serializable, Comparable<Ligue>
 	 * @param administrateur le nouvel administrateur de la ligue.
 	 */
 	
-	public void setAdministrateur(Employe administrateur)
+	public void setAdministrateur(Employe administrateur,Ligue ligue)
 	{
 		Employe root = gestionPersonnel.getRoot();
 		if (administrateur != root && administrateur.getLigue() != this)
 			throw new DroitsInsuffisants();
 		this.administrateur = administrateur;
-		//gestionPersonnel.setAdmin(administrateur);
+		gestionPersonnel.setAdmin(administrateur,ligue);
 	}
 
 	/**
@@ -168,10 +168,10 @@ public class Ligue implements Serializable, Comparable<Ligue>
 		}
 	}
 
-	public void changeAdmin(Employe employe) throws SauvegardeImpossible 
+	public void changeAdmin(Employe employe,Ligue ligue) throws SauvegardeImpossible 
 	{
 		this.administrateur = employe;
-		gestionPersonnel.changerAdmin(employe);
+		gestionPersonnel.changerAdmin(employe, ligue);
 	}
 	
 	@Override
@@ -200,9 +200,9 @@ public class Ligue implements Serializable, Comparable<Ligue>
 		return id;
 	}
 	
-	public void setAdmin(Employe employe) 
+	public void setAdmin(Employe employe, Ligue ligue) 
 	{
-		gestionPersonnel.setAdmin(employe);
+		gestionPersonnel.setAdmin(employe,ligue);
 	}
 	
 	

@@ -190,9 +190,9 @@ public class GestionPersonnel implements Serializable
 		return root;
 	}
 	
-	void changerAdmin(Employe employe) throws SauvegardeImpossible
+	void changerAdmin(Employe employe, Ligue ligue) throws SauvegardeImpossible
 	{
-			passerelle.SetAdmin(employe);
+			passerelle.SetAdmin(employe, ligue);
 		
 	}
 	
@@ -206,11 +206,11 @@ public class GestionPersonnel implements Serializable
 		passerelle.updateRoot(employe);
 	}
 	
-	void setAdmin(Employe employe)
+	void setAdmin(Employe employe, Ligue ligue)
 	{
 		try
 		{
-			passerelle.SetAdmin(employe);
+			passerelle.SetAdmin(employe,ligue);
 		}
 		catch(SauvegardeImpossible e)
 		{

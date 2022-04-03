@@ -85,7 +85,7 @@ class testEmploye
 	{
 		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
 		Employe employe = ligue.addEmploye("John", "Doe", "jhondoe@mail.com", "admin", null, null);
-		ligue.setAdministrateur(employe);
+		ligue.setAdministrateur(employe,ligue);
 		assertEquals(employe, ligue.getAdministrateur());
 	}
 	
@@ -147,22 +147,22 @@ class testEmploye
 		 Ligue ligue1 = gestionPersonnel.addLigue("ligue2");
 		 Employe employe = ligue.addEmploye("test", "employe", "test@gmail.com","azerty", null, null);
 		 Employe employe2 = ligue.addEmploye("Jaen", "Mathilde", "mathilde@gmail.com", "azerty", null, null);
-		 ligue.setAdministrateur(employe);
+		 ligue.setAdministrateur(employe,ligue);
 		 assertTrue(employe.estAdmin(ligue));
 		 assertFalse(employe.estAdmin(ligue1));
 		 assertFalse(employe2.estAdmin(ligue));  
 	 }
 	
 	 @Test
-     void remove() throws SauvegardeImpossible
+     void remove() throws SauvegardeImpossible, DateInvalideException
      {
              Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
              Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", null, null);
-             Employe employe2 = GestionPersonnel.getGestionPersonnel().getRoot();
-             ligue.setAdministrateur(employe);
-             employe.remove(employe);
-             assertFalse(ligue.getEmployes().contains(employe));
-             assertTrue(ligue.getAdministrateur().equals(employe2));
+             Employe root = GestionPersonnel.getGestionPersonnel().getRoot();
+             ligue.setAdministrateur(employe,ligue);
+             employe.remove(employe,ligue);
+             assertTrue(employe.getDateDepart() !=null);
+ 			assertEquals(ligue.getAdministrateur().toString(), "root  admin");
             
      }
 	

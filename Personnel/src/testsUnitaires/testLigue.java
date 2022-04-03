@@ -62,7 +62,7 @@ class testLigue
 	void getAdmin() throws SauvegardeImpossible
 	{
 		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		assertEquals("root", ligue.getAdministrateur());
+		assertEquals(ligue.getAdministrateur().toString(), "root  admin");
 	}
 	
 	@Test
@@ -70,7 +70,7 @@ class testLigue
 	{
 		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
 		Employe employe = ligue.addEmploye("John", "Doe", "jhondoe@mail.com", "admin", null, null);
-		ligue.setAdministrateur(employe);
+		ligue.setAdministrateur(employe,ligue);
 		assertEquals(employe, ligue.getAdministrateur());
 	}
 	

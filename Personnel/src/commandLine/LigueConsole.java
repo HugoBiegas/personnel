@@ -114,7 +114,7 @@ public class LigueConsole
 		List<Employe> EmployeList = new List<>("Changer administrateur", "c",
 				   ()-> new ArrayList<>(ligue.getEmployes()),
 				   (index, element) -> {
-					   ligue.setAdministrateur(element);
+					   ligue.setAdministrateur(element,ligue);
 				   });
 		  EmployeList.addBack("q");
 		          return EmployeList;
@@ -177,8 +177,11 @@ public class LigueConsole
 		List<Employe> EmployeList = new List<>("Supprimer un employé", "s", 
 				() -> new ArrayList<>(ligue.getEmployes()),
 				(index, element) -> {try {
-					element.remove(element);
+					element.remove(element,ligue);
 				} catch (SauvegardeImpossible e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (DateInvalideException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}}

@@ -12,7 +12,7 @@ public interface Passerelle
 	public void updateEmploye(Employe employe, String string) throws SauvegardeImpossible;
 	public Employe getSuperAdmin(Employe root) throws SauvegardeImpossible;
 	public void updateEmp(Employe employe) throws SauvegardeImpossible;
-	void SetAdmin(Employe employe) throws SauvegardeImpossible;
+	void SetAdmin(Employe employe, Ligue ligue) throws SauvegardeImpossible;
     void updateRoot(Employe employe) throws SauvegardeImpossible;
 	public void setRoot(Employe employe);
 	void removeAdmin(Ligue ligue) throws SauvegardeImpossible;

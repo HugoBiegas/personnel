@@ -92,7 +92,7 @@ public class Serialization implements personnel.Passerelle
 	}
 
 	@Override
-	public void SetAdmin(Employe employe) throws SauvegardeImpossible {
+	public void SetAdmin(Employe employe,Ligue ligue) throws SauvegardeImpossible {
 		
 		
 	}
@@ -115,10 +115,6 @@ public class Serialization implements personnel.Passerelle
 		
 	}
 	@Override
-	public void RestAdmin(Employe employe) throws SauvegardeImpossible{
-	}
-
-	@Override
 	public void updateRoot(Employe employe) throws SauvegardeImpossible {
 		// TODO Auto-generated method stub
 		
@@ -132,6 +128,11 @@ public class Serialization implements personnel.Passerelle
 
 	@Override
 	public void removeAdmin(Ligue ligue) throws SauvegardeImpossible {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void RestAdmin(Employe employe) throws SauvegardeImpossible {
 		// TODO Auto-generated method stub
 		
 	}

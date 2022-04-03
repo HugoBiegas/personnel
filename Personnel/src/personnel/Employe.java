@@ -245,15 +245,17 @@ public class Employe implements Serializable, Comparable<Employe>
 	 * Supprime l'employé. Si celui-ci est un administrateur, le root
 	 * récupère les droits d'administration sur sa ligue.
 	 * @throws SauvegardeImpossible 
+	 * @throws DateInvalideException 
 	 */
 	
-	public void remove(Employe employe) throws SauvegardeImpossible
+	public void remove(Employe employe, Ligue ligue) throws SauvegardeImpossible, DateInvalideException
 	{
 		Employe root = gestionPersonnel.getRoot();
-		if (employe.estAdmin(getLigue())) {
-			employe.getLigue().setAdministrateur(root);
+		if (employe.estAdmin(ligue)) {
+			ligue.setAdministrateur(root,ligue);
 			gestionPersonnel.RestAdmin(employe);	
 		}
+		employe.setDateDepart(LocalDate.now());
 	}
 
 	@Override

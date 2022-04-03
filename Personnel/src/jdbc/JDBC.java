@@ -82,7 +82,7 @@ public class JDBC implements Passerelle
 		        Employe employes = ligue.addEmploye(nom, prenom, mail, password, dateDepart,dateArrivee, id);
 			    //si il est admin d'une ligue
 			    if(employe.getBoolean("admin")) {
-			    	ligue.setAdministrateur(employes);
+			    	ligue.setAdministrateur(employes,ligue);
 			    }
 			} 
 			}
@@ -273,14 +273,14 @@ public class JDBC implements Passerelle
 	}
 
 	@Override
-	public void SetAdmin(Employe employe) throws SauvegardeImpossible 
+	public void SetAdmin(Employe employe, Ligue ligue) throws SauvegardeImpossible 
 	{
 		try 
 		{
 			PreparedStatement listEmploye;
 			listEmploye = connection.prepareStatement("UPDATE employe SET admin = ? WHERE num_ligue_Actu = ? AND id_employe = ?");
 			listEmploye.setInt(1, 1);
-			listEmploye.setInt(2, employe.getLigue().getId());
+			listEmploye.setInt(2, ligue.getId());
 			listEmploye.setInt(3, employe.getId());
 			listEmploye.executeUpdate();
 		} 
